@@ -487,7 +487,7 @@ namespace Backsplice
             btnBrowse.Enabled = true;
             btnCreate.Enabled = true;
             btnClose.Enabled = true;
-            MessageBox.Show("Back Splice has finished creating the paperwork for week " + cboWeek.Text + ".", "Creation Complete", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show("Backsplice has finished creating the paperwork for week " + cboWeek.Text + ".", "Creation Complete", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void SetProgressBarMaximum(int _intMaximum)
