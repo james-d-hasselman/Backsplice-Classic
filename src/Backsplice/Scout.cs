@@ -2,7 +2,7 @@
 
 namespace Backsplice
 {
-    class Scout
+    public class Scout
     {
         private string m_strName;
         private string m_strTroopString;

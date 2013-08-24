@@ -161,6 +161,7 @@
     <Compile Include="BackspliceMain.Designer.cs">
       <DependentUpon>BackspliceMain.cs</DependentUpon>
     </Compile>
+    <Compile Include="Roster.cs" />
     <Compile Include="Scout.cs" />
     <Compile Include="ScoutList.cs" />
     <Compile Include="ExcelSpreadsheet.cs" />

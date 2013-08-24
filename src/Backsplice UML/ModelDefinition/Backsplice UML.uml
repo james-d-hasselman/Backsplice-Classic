@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<modelStoreModel xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm4="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm5="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/dsltools/LogicalClassDesigner"
+<modelStoreModel xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm4="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm5="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/dsltools/LogicalClassDesigner"
   dslVersion="1.0.0.0"
   Id="f56b12e9-af71-468a-992f-58bfcdc1dcaf"
   name="Backsplice UML" xmlns="http://schemas.microsoft.com/dsltools/ModelStore">
@@ -1785,6 +1785,44 @@
               </operationHasOwnedParameters>
             </ownedParameters>
           </operation>
+          <operation
+            Id="93dd481e-2733-4a85-a639-db663b303663"
+            name="IsCompatible"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="true"
+            concurrency="Sequential"
+            isQuery="false">
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="6eeb8e3c-0a21-4fac-9f87-b2b225aa6d54"
+                  name="file"
+                  direction="In"
+                  isUnique="false">
+                  <type_NamedElement>
+                    <undefinedTypeMoniker
+                      Id="248e0181-2b82-4578-8cc6-8fa6ca9ae11e"
+                      LastKnownName="File"
+                      LastKnownLocation="Backsplice UML.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="54eab219-39b5-48b1-a8b7-e9b8e8ea11ad"
+                  direction="Return"
+                  isUnique="false">
+                  <type_NamedElement>
+                    <undefinedTypeMoniker
+                      Id="03ffdbf5-fccb-4617-8190-ef35250c06cd"
+                      LastKnownName="bool"
+                      LastKnownLocation="Backsplice UML.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
         </ownedOperations>
       </Interface>
     </packageHasNamedElement>
@@ -1801,13 +1839,6 @@
             <interfaceMoniker
               Id="56ac995e-654f-4015-ad7b-0b2e16ada684"
               LastKnownName="IRoster"
-              LastKnownLocation="Backsplice UML.uml" />
-          </interfaceRealization>
-          <interfaceRealization
-            Id="9d9560bd-9357-4e1d-a787-018f94259d2e">
-            <interfaceMoniker
-              Id="f31f39b4-5b6a-4864-b9a3-6e4c5ffc6701"
-              LastKnownName="ICompatible"
               LastKnownLocation="Backsplice UML.uml" />
           </interfaceRealization>
         </suppliersInternal>
@@ -1968,6 +1999,44 @@
               </operationHasOwnedParameters>
             </ownedParameters>
           </operation>
+          <operation
+            Id="c16c84a1-dd7e-49b3-be01-dcfe8447b14f"
+            name="IsCompatible"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="ba7865a0-bb64-4dad-8949-da8bc99ddeaa"
+                  name="file"
+                  direction="In"
+                  isUnique="false">
+                  <type_NamedElement>
+                    <undefinedTypeMoniker
+                      Id="248e0181-2b82-4578-8cc6-8fa6ca9ae11e"
+                      LastKnownName="File"
+                      LastKnownLocation="Backsplice UML.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="b1f18171-8000-4a33-9723-028a5a9505d0"
+                  direction="Return"
+                  isUnique="false">
+                  <type_NamedElement>
+                    <undefinedTypeMoniker
+                      Id="03ffdbf5-fccb-4617-8190-ef35250c06cd"
+                      LastKnownName="bool"
+                      LastKnownLocation="Backsplice UML.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
         </ownedOperationsInternal>
       </class>
     </packageHasNamedElement>
@@ -1984,13 +2053,6 @@
             <interfaceMoniker
               Id="56ac995e-654f-4015-ad7b-0b2e16ada684"
               LastKnownName="IRoster"
-              LastKnownLocation="Backsplice UML.uml" />
-          </interfaceRealization>
-          <interfaceRealization
-            Id="2491a003-3f1d-4b16-a137-976970a0faf1">
-            <interfaceMoniker
-              Id="f31f39b4-5b6a-4864-b9a3-6e4c5ffc6701"
-              LastKnownName="ICompatible"
               LastKnownLocation="Backsplice UML.uml" />
           </interfaceRealization>
         </suppliersInternal>
@@ -2145,6 +2207,44 @@
                     <primitiveTypeMoniker
                       Id="8943dc84-709e-4f62-b15a-a3273aa6f165"
                       LastKnownName="Boolean"
+                      LastKnownLocation="Backsplice UML.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="1f9c5718-7633-42ae-acec-3aa659722ce0"
+            name="IsCompatible"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="e017bda8-bbb9-4faf-a798-c68b1c8a73dc"
+                  name="file"
+                  direction="In"
+                  isUnique="false">
+                  <type_NamedElement>
+                    <undefinedTypeMoniker
+                      Id="248e0181-2b82-4578-8cc6-8fa6ca9ae11e"
+                      LastKnownName="File"
+                      LastKnownLocation="Backsplice UML.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="605483d4-11d9-46d2-8f35-b80203cb9f9c"
+                  direction="Return"
+                  isUnique="false">
+                  <type_NamedElement>
+                    <undefinedTypeMoniker
+                      Id="03ffdbf5-fccb-4617-8190-ef35250c06cd"
+                      LastKnownName="bool"
                       LastKnownLocation="Backsplice UML.uml" />
                   </type_NamedElement>
                 </parameter>
@@ -2367,39 +2467,6 @@
       </class>
     </packageHasNamedElement>
     <packageHasNamedElement>
-      <Interface
-        Id="f31f39b4-5b6a-4864-b9a3-6e4c5ffc6701"
-        name="ICompatible"
-        isAbstract="false"
-        isLeaf="false">
-        <ownedOperations>
-          <operation
-            Id="0a1db74a-c4cb-4246-9796-a15b9477b4f0"
-            name="IsCompatible"
-            isLeaf="false"
-            isStatic="false"
-            isAbstract="true"
-            concurrency="Sequential"
-            isQuery="false">
-            <ownedParameters>
-              <operationHasOwnedParameters>
-                <parameter
-                  Id="de02a91a-9c51-4280-89d1-0fc045b495af"
-                  direction="Return">
-                  <type_NamedElement>
-                    <primitiveTypeMoniker
-                      Id="8943dc84-709e-4f62-b15a-a3273aa6f165"
-                      LastKnownName="Boolean"
-                      LastKnownLocation="Backsplice UML.uml" />
-                  </type_NamedElement>
-                </parameter>
-              </operationHasOwnedParameters>
-            </ownedParameters>
-          </operation>
-        </ownedOperations>
-      </Interface>
-    </packageHasNamedElement>
-    <packageHasNamedElement>
       <class
         Id="17f48054-4678-4fc1-9745-e0dd3c50dcfd"
         name="RosterFactory"
@@ -2412,13 +2479,6 @@
             <interfaceMoniker
               Id="56ac995e-654f-4015-ad7b-0b2e16ada684"
               LastKnownName="IRoster"
-              LastKnownLocation="Backsplice UML.uml" />
-          </dependency>
-          <dependency
-            Id="33e8923f-fa95-4668-a91c-6c3846f020ed">
-            <interfaceMoniker
-              Id="f31f39b4-5b6a-4864-b9a3-6e4c5ffc6701"
-              LastKnownName="ICompatible"
               LastKnownLocation="Backsplice UML.uml" />
           </dependency>
         </suppliersInternal>
@@ -2770,6 +2830,11 @@
           </property>
         </ownedAttributesInternal>
       </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <undefinedType
+        Id="03ffdbf5-fccb-4617-8190-ef35250c06cd"
+        name="bool" />
     </packageHasNamedElement>
   </packagedElements>
   <primitiveType

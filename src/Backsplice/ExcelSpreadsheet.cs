@@ -12,7 +12,7 @@ namespace Backsplice
     /// </summary>
     class ExcelSpreadsheet : IDisposable
     {
-        // Constants
+        // ConstantsC:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\src\Backsplice\ExcelSpreadsheet.cs
         private const int cm_intNAME_COLUMN = 0;
         private const int cm_intTROOP_COLUMN = 1;
         private const int cm_intSTART_ROW = 2;

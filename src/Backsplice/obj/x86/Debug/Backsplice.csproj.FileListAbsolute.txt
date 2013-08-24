@@ -76,3 +76,6 @@ D:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\src
 D:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\src\Backsplice\bin\x86\Debug\Backsplice.exe
 D:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\src\Backsplice\bin\x86\Debug\Backsplice.pdb
 D:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\src\Backsplice\bin\x86\Debug\Microsoft.Office.Interop.Excel.dll
+C:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\src\Backsplice\bin\x86\Debug\Backsplice.exe.config
+C:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\src\Backsplice\obj\x86\Debug\Backsplice.exe
+C:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\src\Backsplice\obj\x86\Debug\Backsplice.pdb
