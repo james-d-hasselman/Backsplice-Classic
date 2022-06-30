@@ -9,7 +9,7 @@
   <Identity
     Name="300185bf-7514-461e-863f-5127629ae6b4"
     Publisher="CN=James D. Hasselman"
-    Version="1.0.5.0" />
+    Version="1.0.6.0" />
 
   <Properties>
     <DisplayName>Backsplice</DisplayName>
