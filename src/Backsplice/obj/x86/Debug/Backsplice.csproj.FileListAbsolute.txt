@@ -1,0 +1,106 @@
+D:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\BackSplice\BackSplice\obj\x86\Debug\BackSplice.csproj.ResolveComReference.cache
+D:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\BackSplice\BackSplice\bin\x86\Debug\BackSplice.pdb
+D:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\BackSplice\BackSplice\bin\x86\Debug\Microsoft.Office.Interop.Excel.dll
+D:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\BackSplice\BackSplice\obj\x86\Debug\ResolveAssemblyReference.cache
+D:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\BackSplice\BackSplice\obj\x86\Debug\BackSplice.AddScout.resources
+D:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\BackSplice\BackSplice\obj\x86\Debug\BackSplice.CreatePaperwork.resources
+D:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\BackSplice\BackSplice\obj\x86\Debug\BackSplice.DropAdd.resources
+D:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\BackSplice\BackSplice\obj\x86\Debug\BackSplice.FindScout.resources
+D:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\BackSplice\BackSplice\obj\x86\Debug\BackSplice.PrintPaperwork.resources
+D:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\BackSplice\BackSplice\obj\x86\Debug\BackSplice.Properties.Resources.resources
+D:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\BackSplice\BackSplice\obj\x86\Debug\ResGen.read.1.tlog
+D:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\BackSplice\BackSplice\obj\x86\Debug\ResGen.write.1.tlog
+D:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\BackSplice\BackSplice\obj\x86\Debug\BackSplice.pdb
+D:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\BackSplice\BackSplice\bin\x86\Debug\BackSplice Help.chm
+D:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\BackSplice\BackSplice\obj\x86\Debug\BackSplice.Preferences.resources
+D:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\BackSplice\BackSplice\obj\x86\Debug\GenerateResource.read.1.tlog
+D:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\BackSplice\BackSplice\obj\x86\Debug\GenerateResource.write.1.tlog
+D:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\BackSplice\BackSplice\obj\x86\Debug\BackSplice.BackSpliceMain.resources
+C:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\Backsplice\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\Backsplice\obj\x86\Debug\Backsplice.csproj.ResolveComReference.cache
+C:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\Backsplice\obj\x86\Debug\Backsplice.AddScout.resources
+C:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\Backsplice\obj\x86\Debug\Backsplice.BackspliceMain.resources
+C:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\Backsplice\obj\x86\Debug\Backsplice.CreatePaperwork.resources
+C:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\Backsplice\obj\x86\Debug\Backsplice.DropAdd.resources
+C:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\Backsplice\obj\x86\Debug\Backsplice.FindScout.resources
+C:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\Backsplice\obj\x86\Debug\Backsplice.Preferences.resources
+C:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\Backsplice\obj\x86\Debug\Backsplice.PrintPaperwork.resources
+C:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\Backsplice\obj\x86\Debug\Backsplice.Properties.Resources.resources
+C:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\Backsplice\obj\x86\Debug\GenerateResource.read.1.tlog
+C:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\Backsplice\obj\x86\Debug\ResGen.read.1.tlog
+C:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\Backsplice\obj\x86\Debug\GenerateResource.write.1.tlog
+C:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\Backsplice\obj\x86\Debug\ResGen.write.1.tlog
+C:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\Backsplice\obj\x86\Debug\Backsplice.dll
+C:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\Backsplice\obj\x86\Debug\Backsplice.pdb
+C:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\Backsplice\bin\x86\Debug\Backsplice Help.chm
+C:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\Backsplice\bin\x86\Debug\Backsplice.dll.config
+C:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\Backsplice\bin\x86\Debug\Backsplice.dll
+C:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\Backsplice\bin\x86\Debug\Backsplice.pdb
+C:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\Backsplice\bin\x86\Debug\DocumentFormat.OpenXml.dll
+C:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\Backsplice\bin\x86\Debug\DocumentFormat.OpenXml.xml
+C:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\Backsplice\bin\x86\Debug\Microsoft.Office.Interop.Excel.dll
+D:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\Backsplice\bin\x86\Debug\Backsplice.exe.config
+D:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\Backsplice\obj\x86\Debug\Backsplice.exe
+D:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\Backsplice\bin\x86\Debug\Backsplice.exe.manifest
+D:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\Backsplice\bin\x86\Debug\Backsplice.application
+D:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\Backsplice\bin\x86\Debug\Backsplice.exe
+D:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\Backsplice\bin\x86\Debug\DocumentFormat.OpenXml.dll
+D:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\Backsplice\bin\x86\Debug\DocumentFormat.OpenXml.xml
+D:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\Backsplice\obj\x86\Debug\Backsplice.exe.manifest
+D:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\Backsplice\obj\x86\Debug\Backsplice.application
+D:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\Backsplice\bin\x86\Debug\templates\Default Blank.xlsx
+D:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\src\Backsplice\bin\x86\Debug\Backsplice.exe.config
+D:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\src\Backsplice\obj\x86\Debug\Backsplice.csproj.ResolveComReference.cache
+D:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\src\Backsplice\obj\x86\Debug\Backsplice.exe
+D:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\src\Backsplice\obj\x86\Debug\Backsplice.pdb
+D:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\src\Backsplice\bin\x86\Debug\templates\Default Blank.xlsx
+D:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\src\Backsplice\bin\x86\Debug\DocumentFormat.OpenXml.dll
+D:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\src\Backsplice\bin\x86\Debug\DocumentFormat.OpenXml.xml
+D:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\src\Backsplice\obj\x86\Debug\ResolveAssemblyReference.cache
+D:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\src\Backsplice\obj\x86\Debug\Backsplice.AddScout.resources
+D:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\src\Backsplice\obj\x86\Debug\Backsplice.BackspliceMain.resources
+D:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\src\Backsplice\obj\x86\Debug\Backsplice.CreatePaperwork.resources
+D:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\src\Backsplice\obj\x86\Debug\Backsplice.DropAdd.resources
+D:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\src\Backsplice\obj\x86\Debug\Backsplice.FindScout.resources
+D:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\src\Backsplice\obj\x86\Debug\Backsplice.Preferences.resources
+D:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\src\Backsplice\obj\x86\Debug\Backsplice.PrintPaperwork.resources
+D:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\src\Backsplice\obj\x86\Debug\Backsplice.Properties.Resources.resources
+D:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\src\Backsplice\obj\x86\Debug\GenerateResource.read.1.tlog
+D:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\src\Backsplice\obj\x86\Debug\ResGen.read.1.tlog
+D:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\src\Backsplice\obj\x86\Debug\GenerateResource.write.1.tlog
+D:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\src\Backsplice\obj\x86\Debug\ResGen.write.1.tlog
+D:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\src\Backsplice\obj\x86\Debug\Backsplice.exe.manifest
+D:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\src\Backsplice\obj\x86\Debug\Backsplice.application
+D:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\src\Backsplice\bin\x86\Debug\Backsplice.exe.manifest
+D:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\src\Backsplice\bin\x86\Debug\Backsplice.application
+D:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\src\Backsplice\bin\x86\Debug\Backsplice.exe
+D:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\src\Backsplice\bin\x86\Debug\Backsplice.pdb
+D:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\src\Backsplice\bin\x86\Debug\Microsoft.Office.Interop.Excel.dll
+C:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\src\Backsplice\bin\x86\Debug\Backsplice.exe.config
+C:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\src\Backsplice\obj\x86\Debug\Backsplice.exe
+C:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\src\Backsplice\obj\x86\Debug\Backsplice.pdb
+C:\Users\JDH\Source\Repos\Backsplice-Classic\src\Backsplice\obj\x86\Debug\Backsplice.csproj.AssemblyReference.cache
+C:\Users\JDH\Source\Repos\Backsplice-Classic\src\Backsplice\obj\x86\Debug\Backsplice.csproj.SuggestedBindingRedirects.cache
+C:\Users\JDH\Source\Repos\Backsplice-Classic\src\Backsplice\obj\x86\Debug\Backsplice.AddScout.resources
+C:\Users\JDH\Source\Repos\Backsplice-Classic\src\Backsplice\obj\x86\Debug\Backsplice.BackspliceMain.resources
+C:\Users\JDH\Source\Repos\Backsplice-Classic\src\Backsplice\obj\x86\Debug\Backsplice.CreatePaperwork.resources
+C:\Users\JDH\Source\Repos\Backsplice-Classic\src\Backsplice\obj\x86\Debug\Backsplice.DropAdd.resources
+C:\Users\JDH\Source\Repos\Backsplice-Classic\src\Backsplice\obj\x86\Debug\Backsplice.FindScout.resources
+C:\Users\JDH\Source\Repos\Backsplice-Classic\src\Backsplice\obj\x86\Debug\Backsplice.Preferences.resources
+C:\Users\JDH\Source\Repos\Backsplice-Classic\src\Backsplice\obj\x86\Debug\Backsplice.PrintPaperwork.resources
+C:\Users\JDH\Source\Repos\Backsplice-Classic\src\Backsplice\obj\x86\Debug\Backsplice.Properties.Resources.resources
+C:\Users\JDH\Source\Repos\Backsplice-Classic\src\Backsplice\obj\x86\Debug\Backsplice.csproj.GenerateResource.cache
+C:\Users\JDH\Source\Repos\Backsplice-Classic\src\Backsplice\obj\x86\Debug\Backsplice.csproj.CoreCompileInputs.cache
+C:\Users\JDH\Source\Repos\Backsplice-Classic\src\Backsplice\obj\x86\Debug\Backsplice.exe
+C:\Users\JDH\Source\Repos\Backsplice-Classic\src\Backsplice\obj\x86\Debug\Backsplice.pdb
+C:\Users\JDH\Source\Repos\Backsplice-Classic\src\Backsplice\bin\x86\Debug\templates\Default Blank.xlsx
+C:\Users\JDH\Source\Repos\Backsplice-Classic\src\Backsplice\bin\x86\Debug\Backsplice.exe.config
+C:\Users\JDH\Source\Repos\Backsplice-Classic\src\Backsplice\bin\x86\Debug\Backsplice.exe.manifest
+C:\Users\JDH\Source\Repos\Backsplice-Classic\src\Backsplice\bin\x86\Debug\Backsplice.application
+C:\Users\JDH\Source\Repos\Backsplice-Classic\src\Backsplice\bin\x86\Debug\Backsplice.exe
+C:\Users\JDH\Source\Repos\Backsplice-Classic\src\Backsplice\bin\x86\Debug\Backsplice.pdb
+C:\Users\JDH\Source\Repos\Backsplice-Classic\src\Backsplice\bin\x86\Debug\DocumentFormat.OpenXml.dll
+C:\Users\JDH\Source\Repos\Backsplice-Classic\src\Backsplice\bin\x86\Debug\DocumentFormat.OpenXml.xml
+C:\Users\JDH\Source\Repos\Backsplice-Classic\src\Backsplice\obj\x86\Debug\Backsplice.exe.manifest
+C:\Users\JDH\Source\Repos\Backsplice-Classic\src\Backsplice\obj\x86\Debug\Backsplice.application
+C:\Users\JDH\Source\Repos\Backsplice-Classic\src\Backsplice\obj\x86\Debug\Backsplice.csproj.CopyComplete

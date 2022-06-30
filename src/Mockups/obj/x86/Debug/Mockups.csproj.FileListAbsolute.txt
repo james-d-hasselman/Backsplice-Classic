@@ -1,0 +1,12 @@
+D:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\Mockups\bin\Debug\Mockups.exe
+D:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\Mockups\bin\Debug\Mockups.pdb
+D:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\Mockups\obj\x86\Debug\ResolveAssemblyReference.cache
+D:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\Mockups\obj\x86\Debug\Mockups.TemplateMapping1.resources
+D:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\Mockups\obj\x86\Debug\Mockups.Properties.Resources.resources
+D:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\Mockups\obj\x86\Debug\Mockups.TemplateMapping2.resources
+D:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\Mockups\obj\x86\Debug\Mockups.TemplateMapping3.resources
+D:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\Mockups\obj\x86\Debug\Mockups.TemplateMapping4.resources
+D:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\Mockups\obj\x86\Debug\GenerateResource.read.1.tlog
+D:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\Mockups\obj\x86\Debug\GenerateResource.write.1.tlog
+D:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\Mockups\obj\x86\Debug\Mockups.exe
+D:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\Mockups\obj\x86\Debug\Mockups.pdb

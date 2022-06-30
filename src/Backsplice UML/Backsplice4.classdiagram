@@ -1,0 +1,255 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<logicalClassDesignerModel xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm4="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm5="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/dsltools/ModelStore" dslVersion="1.0.0.0" Id="8ed9537f-1228-4218-9c10-0b8271008e13" name="Backsplice4" linkedPackageId="b6ceced3-448b-4a28-a55e-aba06f1a3de8" xmlns="http://schemas.microsoft.com/dsltools/LogicalClassDesigner">
+  <profileInstances>
+    <packageHasProfileInstances Id="53ef2420-d981-4348-b22b-acd9daf2b39e">
+      <profileInstance Id="0702ba22-ddd1-4116-85f7-059d28504de0" name="StandardProfileL2">
+        <elementDefinition Id="e34d544e-0fea-4ed6-ac5e-1b74119ac791" />
+      </profileInstance>
+      <elementDefinition Id="0caec977-1f8c-4ba3-a7db-8cc9ad9cc73b" />
+    </packageHasProfileInstances>
+    <packageHasProfileInstances Id="17577cf1-6f4c-4fa4-8648-c3ee9b66cc3d">
+      <profileInstance Id="1b4d5345-1fa0-40a1-ae25-015661886158" name="StandardProfileL3">
+        <elementDefinition Id="532ea607-fb19-44b8-8502-3351b05452be" />
+      </profileInstance>
+      <elementDefinition Id="29349502-908c-4fda-9054-c48619c59ed0" />
+    </packageHasProfileInstances>
+  </profileInstances>
+  <packagedElements>
+    <logicalClassDesignerModelHasTypes>
+      <class Id="1dec4b8f-9155-4c85-b6d5-51e553c34a74" name="PrinterFactory" isAbstract="true" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="5af4bff6-98b4-479f-b43a-6ce3c06e797d" />
+        <suppliersInternal>
+          <dependency Id="d5082e3c-95a7-4516-9055-6156979d37c6">
+            <interfaceMoniker Id="9238aae3-a604-434c-bbbc-953259b8f3ae" LastKnownName="IPrinter" />
+            <elementDefinition Id="81095b18-acda-4cd9-a0fa-0db6ef8b3f91" />
+          </dependency>
+        </suppliersInternal>
+        <ownedOperationsInternal>
+          <operation Id="b8e20916-a777-4393-86df-0be662bb9105" name="GetPrinter" isLeaf="false" isStatic="true" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="39443b51-6097-4aab-a861-0a06e6fbaf1c" />
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter Id="3495572d-474c-469a-8f86-fdeea8a541c9" name="installedApplication" direction="In" isUnique="false">
+                  <elementDefinition Id="4cd08109-17be-4a71-a8ca-f103b2e9aa3f" />
+                  <type_NamedElement>
+                    <referencedTypeMoniker Id="45497d57-e30e-44c7-81c5-1d19baaa0a57" LastKnownName="string" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+        </ownedOperationsInternal>
+      </class>
+    </logicalClassDesignerModelHasTypes>
+    <logicalClassDesignerModelHasTypes>
+      <Interface Id="9238aae3-a604-434c-bbbc-953259b8f3ae" name="IPrinter" isAbstract="false" isLeaf="false">
+        <elementDefinition Id="ec191d4e-8621-4098-9992-cf3ff2132a8f" />
+        <ownedOperations>
+          <operation Id="0c13f96a-7989-49b8-ba0b-1236325266d4" name="Print" isLeaf="false" isStatic="false" isAbstract="true" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="52c04279-41a1-4d78-8955-adf246c17f80" />
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter Id="853e18f5-141d-406b-b69b-2972cf9467bd" name="file" direction="In" isUnique="false">
+                  <elementDefinition Id="10eaa790-469f-4f8c-b867-b56fd03ef6b3" />
+                  <type_NamedElement>
+                    <referencedTypeMoniker Id="861c5cc7-439a-49ec-a968-1b1e8fd41f46" LastKnownName="File" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+              <operationHasOwnedParameters>
+                <parameter Id="0fe1f470-d085-42f2-b1df-693faf450d18" name="printer" direction="In" isUnique="false">
+                  <elementDefinition Id="f9566a23-f1e9-4877-aa8b-0f49e639ee89" />
+                  <type_NamedElement>
+                    <referencedTypeMoniker Id="e3f777c2-dc7f-49fa-8e23-02a9a176d6e4" LastKnownName="System.Drawing.Printing.PrinterSettings" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+        </ownedOperations>
+      </Interface>
+    </logicalClassDesignerModelHasTypes>
+    <logicalClassDesignerModelHasTypes>
+      <class Id="e7cc5fa2-4acc-4af3-b9d3-2bdbbac79986" name="ExcelPrinter" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="438dedef-b6cd-4694-b8af-9574aaeec125" />
+        <suppliersInternal>
+          <interfaceRealization Id="4b0aaf52-ddf0-4ce3-9065-7fad97761b33">
+            <interfaceMoniker Id="9238aae3-a604-434c-bbbc-953259b8f3ae" LastKnownName="IPrinter" />
+            <elementDefinition Id="3c9a547f-da58-4dba-8478-4f2685e8ceb2" />
+          </interfaceRealization>
+        </suppliersInternal>
+        <ownedOperationsInternal>
+          <operation Id="c41196e6-1e30-4a3e-8969-66cc8f76321c" name="Print" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="0dd1de3f-ecfe-4f28-9186-b6130807c6ff" />
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter Id="a8c18515-6bc4-4d3e-978f-5977b65917cd" name="file" direction="In" isUnique="false">
+                  <elementDefinition Id="fe34a00d-ec56-494e-a625-4ad410288276" />
+                  <type_NamedElement>
+                    <referencedTypeMoniker Id="861c5cc7-439a-49ec-a968-1b1e8fd41f46" LastKnownName="File" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+              <operationHasOwnedParameters>
+                <parameter Id="f845d972-16fb-4ae2-b8cf-078e938226f4" name="printer" direction="In" isUnique="false">
+                  <elementDefinition Id="e3b0e318-61af-4c92-9e20-3a14b75222f6" />
+                  <type_NamedElement>
+                    <referencedTypeMoniker Id="e3f777c2-dc7f-49fa-8e23-02a9a176d6e4" LastKnownName="System.Drawing.Printing.PrinterSettings" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+        </ownedOperationsInternal>
+      </class>
+    </logicalClassDesignerModelHasTypes>
+    <logicalClassDesignerModelHasTypes>
+      <class Id="402743ee-819e-4ffe-ab02-6907d0a6f458" name="LibreOfficePrinter" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="dce28b68-cec4-4059-9c6c-a2a3c1f97ed8" />
+        <suppliersInternal>
+          <interfaceRealization Id="1d1a0361-684a-49c2-81b5-fec7399bd5c5">
+            <interfaceMoniker Id="9238aae3-a604-434c-bbbc-953259b8f3ae" LastKnownName="IPrinter" />
+            <elementDefinition Id="318c64e2-da9f-49c1-824a-c9a495fa278f" />
+          </interfaceRealization>
+        </suppliersInternal>
+        <ownedOperationsInternal>
+          <operation Id="74f06d67-9556-4407-b221-2c3138788313" name="Print" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="c2b59216-b41b-4308-909e-1452a508663f" />
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter Id="a11135d3-d700-408e-9d15-a9b6b28746a8" name="file" direction="In" isUnique="false">
+                  <elementDefinition Id="e3eadc1b-73d7-48bf-8cba-0d5eab37fa4e" />
+                  <type_NamedElement>
+                    <referencedTypeMoniker Id="861c5cc7-439a-49ec-a968-1b1e8fd41f46" LastKnownName="File" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+              <operationHasOwnedParameters>
+                <parameter Id="dbfc6b1c-550d-4147-86ca-badaa6dd5694" name="printer" direction="In" isUnique="false">
+                  <elementDefinition Id="f9e9546d-3d25-4aea-a365-96f5e2308210" />
+                  <type_NamedElement>
+                    <referencedTypeMoniker Id="e3f777c2-dc7f-49fa-8e23-02a9a176d6e4" LastKnownName="System.Drawing.Printing.PrinterSettings" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+        </ownedOperationsInternal>
+      </class>
+    </logicalClassDesignerModelHasTypes>
+    <packageHasNamedElement>
+      <referencedType Id="45497d57-e30e-44c7-81c5-1d19baaa0a57" name="string" isAbstract="false" isLeaf="false" cachedFullName="string">
+        <elementDefinition Id="b08ca152-0115-4e39-9102-c5af263ef227" />
+      </referencedType>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <referencedType Id="861c5cc7-439a-49ec-a968-1b1e8fd41f46" name="File" isAbstract="false" isLeaf="false" cachedFullName="File">
+        <elementDefinition Id="248e0181-2b82-4578-8cc6-8fa6ca9ae11e" />
+      </referencedType>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <referencedType Id="e3f777c2-dc7f-49fa-8e23-02a9a176d6e4" name="System.Drawing.Printing.PrinterSettings" isAbstract="false" isLeaf="false" cachedFullName="System.Drawing.Printing.PrinterSettings">
+        <elementDefinition Id="ecf589ee-6eb6-4478-8653-22879293a0a4" />
+      </referencedType>
+    </packageHasNamedElement>
+    <logicalClassDesignerModelHasTypes>
+      <Interface Id="4ff0fbd3-c982-4012-9e41-c1841c2c8e22" name="IRoster" isAbstract="false" isLeaf="false">
+        <elementDefinition Id="dee2cb7f-571a-46b0-badb-b4d1f3dfc8ff" />
+        <ownedOperations>
+          <operation Id="c7099bd8-3c61-4238-a978-45d64d2cd1fa" name="AddScout" isLeaf="false" isStatic="false" isAbstract="true" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="523050c9-6e2b-4c99-a412-9af18a158556" />
+          </operation>
+          <operation Id="b496081f-a3f8-49fc-8d11-6446175a161e" name="RemoveScout" isLeaf="false" isStatic="false" isAbstract="true" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="f56c8d92-f6a1-4313-9327-d554b6b20911" />
+          </operation>
+          <operation Id="3923c1fb-af30-494f-aa40-e7d88c1ecae2" name="Sort" isLeaf="false" isStatic="false" isAbstract="true" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="b1b1ba4f-bb74-4f51-ade9-9b8f6893acd8" />
+          </operation>
+          <operation Id="0ebc03cd-fd21-4516-8c2c-8b71fda9c76f" name="SetPeriod" isLeaf="false" isStatic="false" isAbstract="true" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="3ec0cc93-98e2-4c10-8d84-8da960f966bf" />
+          </operation>
+          <operation Id="37de6cc1-2a43-4b1e-8372-a0e6c6e018ec" name="SetProgram" isLeaf="false" isStatic="false" isAbstract="true" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="ff44b357-0c06-4e44-b6b4-373fe3eab962" />
+          </operation>
+          <operation Id="4c1af0d3-73b1-4f7d-94fe-9c5c6a725117" name="SetWeek" isLeaf="false" isStatic="false" isAbstract="true" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="ea2d2002-c798-4d34-9bcb-68df261457e1" />
+          </operation>
+          <operation Id="5321fcc5-9b7e-4562-af61-a030af23bef5" name="IsCompatible" isLeaf="false" isStatic="false" isAbstract="true" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="f2c8eeec-7310-48a5-975e-ddc361ac08ed" />
+          </operation>
+        </ownedOperations>
+      </Interface>
+    </logicalClassDesignerModelHasTypes>
+    <logicalClassDesignerModelHasTypes>
+      <class Id="32c8c0f2-c730-4959-b1aa-675b47b0ff9d" name="ProgramPaperwork" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="6e2fadbe-bd37-405b-8856-d75732016147" />
+        <suppliersInternal>
+          <interfaceRealization Id="6df34f85-1a9b-4db4-b022-2c684c6a6743">
+            <interfaceMoniker Id="4ff0fbd3-c982-4012-9e41-c1841c2c8e22" LastKnownName="IRoster" />
+            <elementDefinition Id="0130cfda-6237-4f37-aa2f-a92c8fc92c96" />
+          </interfaceRealization>
+        </suppliersInternal>
+        <ownedOperationsInternal>
+          <operation Id="1c7228fa-fc36-4cd1-89f6-d030bdecd4fa" name="AddScout" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="25cb42f2-b950-4999-8c29-950e83dcbefa" />
+          </operation>
+          <operation Id="d14d5035-d5dc-4477-b466-64537e823696" name="RemoveScout" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="b5c81a87-4b0b-47e9-bf04-4cdb6aa24259" />
+          </operation>
+          <operation Id="cfc05e10-edfb-4149-b1e4-f61906505218" name="Sort" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="5114be55-3e91-4b5f-9393-2791558c168f" />
+          </operation>
+          <operation Id="1e6ef142-7251-4ebb-81c5-5be96e90642e" name="SetPeriod" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="e1324a47-82a4-4aac-9ec9-d0a027df1116" />
+          </operation>
+          <operation Id="5c34a8c3-2166-4bf1-84f2-16d7e0639fbe" name="SetProgram" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="23a22bb5-1b8c-48f5-b9df-4d5c30d20dd8" />
+          </operation>
+          <operation Id="8dcdc52b-ae33-4c5a-b36b-5938a61b5c7e" name="SetWeek" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="ef89d107-ca23-467a-8bc4-9ef34426e1e2" />
+          </operation>
+          <operation Id="ed42d439-74b0-42cf-a1c6-08201981f814" name="IsCompatible" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="3aee4440-d918-46c2-aa83-47660c38ea0d" />
+          </operation>
+        </ownedOperationsInternal>
+      </class>
+    </logicalClassDesignerModelHasTypes>
+    <logicalClassDesignerModelHasTypes>
+      <class Id="68050a62-951b-4ea6-96b0-e7ddd9ab6247" name="Spreadsheet" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="c676b1db-c98d-4ffe-9d6b-94b737e911b8" />
+        <suppliersInternal>
+          <interfaceRealization Id="a8c5ca1f-0060-4aa8-a08a-404ee78b5b38">
+            <interfaceMoniker Id="4ff0fbd3-c982-4012-9e41-c1841c2c8e22" LastKnownName="IRoster" />
+            <elementDefinition Id="a9301320-a697-4f7f-9b4f-693033298e54" />
+          </interfaceRealization>
+        </suppliersInternal>
+        <ownedOperationsInternal>
+          <operation Id="b484315d-8dbb-4c70-9cd3-31949986ee31" name="AddScout" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="26aff1dd-ce8b-494f-95e7-112e5e4c10a6" />
+          </operation>
+          <operation Id="0172e4a6-dc2a-4139-8d25-c14697935e89" name="RemoveScout" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="cb60ca79-2185-4856-be1f-4f1405ada194" />
+          </operation>
+          <operation Id="f35c7b41-7097-4c88-9a58-975964d75148" name="Sort" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="df37d2da-25c3-4d8d-b5ad-af3f74d35d03" />
+          </operation>
+          <operation Id="5da27c85-ed1d-4401-a89d-996041f2ba3f" name="SetPeriod" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="ef61a91b-2720-4710-90ac-d89923b67a93" />
+          </operation>
+          <operation Id="2d2d39df-33b2-4195-9451-33d65b45ec43" name="SetProgram" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="8d7aa6e7-d455-419e-b5b5-2ec0cd060120" />
+          </operation>
+          <operation Id="85fcdb6c-add1-4f28-8f03-dc13cff8dcdc" name="SetWeek" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="90a7d7a2-24ba-4f7a-a342-472254de4f82" />
+          </operation>
+          <operation Id="40d37a3c-cd9c-4747-970c-f196489517bc" name="IsCompatible" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="e51825fb-e191-472e-b92a-832db4a53c19" />
+          </operation>
+        </ownedOperationsInternal>
+      </class>
+    </logicalClassDesignerModelHasTypes>
+  </packagedElements>
+  <package Id="b6ceced3-448b-4a28-a55e-aba06f1a3de8" name="Backsplice UML">
+    <elementDefinition Id="f56b12e9-af71-468a-992f-58bfcdc1dcaf" />
+  </package>
+</logicalClassDesignerModel>
