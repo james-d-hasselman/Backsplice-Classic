@@ -79,3 +79,28 @@ D:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\src
 C:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\src\Backsplice\bin\x86\Debug\Backsplice.exe.config
 C:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\src\Backsplice\obj\x86\Debug\Backsplice.exe
 C:\Users\James D. Hasselman\Documents\Visual Studio 2010\Projects\Backsplice\src\Backsplice\obj\x86\Debug\Backsplice.pdb
+C:\Users\JDH\Source\Repos\Backsplice-Classic\src\Backsplice\obj\x86\Debug\Backsplice.csproj.AssemblyReference.cache
+C:\Users\JDH\Source\Repos\Backsplice-Classic\src\Backsplice\obj\x86\Debug\Backsplice.csproj.SuggestedBindingRedirects.cache
+C:\Users\JDH\Source\Repos\Backsplice-Classic\src\Backsplice\obj\x86\Debug\Backsplice.AddScout.resources
+C:\Users\JDH\Source\Repos\Backsplice-Classic\src\Backsplice\obj\x86\Debug\Backsplice.BackspliceMain.resources
+C:\Users\JDH\Source\Repos\Backsplice-Classic\src\Backsplice\obj\x86\Debug\Backsplice.CreatePaperwork.resources
+C:\Users\JDH\Source\Repos\Backsplice-Classic\src\Backsplice\obj\x86\Debug\Backsplice.DropAdd.resources
+C:\Users\JDH\Source\Repos\Backsplice-Classic\src\Backsplice\obj\x86\Debug\Backsplice.FindScout.resources
+C:\Users\JDH\Source\Repos\Backsplice-Classic\src\Backsplice\obj\x86\Debug\Backsplice.Preferences.resources
+C:\Users\JDH\Source\Repos\Backsplice-Classic\src\Backsplice\obj\x86\Debug\Backsplice.PrintPaperwork.resources
+C:\Users\JDH\Source\Repos\Backsplice-Classic\src\Backsplice\obj\x86\Debug\Backsplice.Properties.Resources.resources
+C:\Users\JDH\Source\Repos\Backsplice-Classic\src\Backsplice\obj\x86\Debug\Backsplice.csproj.GenerateResource.cache
+C:\Users\JDH\Source\Repos\Backsplice-Classic\src\Backsplice\obj\x86\Debug\Backsplice.csproj.CoreCompileInputs.cache
+C:\Users\JDH\Source\Repos\Backsplice-Classic\src\Backsplice\obj\x86\Debug\Backsplice.exe
+C:\Users\JDH\Source\Repos\Backsplice-Classic\src\Backsplice\obj\x86\Debug\Backsplice.pdb
+C:\Users\JDH\Source\Repos\Backsplice-Classic\src\Backsplice\bin\x86\Debug\templates\Default Blank.xlsx
+C:\Users\JDH\Source\Repos\Backsplice-Classic\src\Backsplice\bin\x86\Debug\Backsplice.exe.config
+C:\Users\JDH\Source\Repos\Backsplice-Classic\src\Backsplice\bin\x86\Debug\Backsplice.exe.manifest
+C:\Users\JDH\Source\Repos\Backsplice-Classic\src\Backsplice\bin\x86\Debug\Backsplice.application
+C:\Users\JDH\Source\Repos\Backsplice-Classic\src\Backsplice\bin\x86\Debug\Backsplice.exe
+C:\Users\JDH\Source\Repos\Backsplice-Classic\src\Backsplice\bin\x86\Debug\Backsplice.pdb
+C:\Users\JDH\Source\Repos\Backsplice-Classic\src\Backsplice\bin\x86\Debug\DocumentFormat.OpenXml.dll
+C:\Users\JDH\Source\Repos\Backsplice-Classic\src\Backsplice\bin\x86\Debug\DocumentFormat.OpenXml.xml
+C:\Users\JDH\Source\Repos\Backsplice-Classic\src\Backsplice\obj\x86\Debug\Backsplice.exe.manifest
+C:\Users\JDH\Source\Repos\Backsplice-Classic\src\Backsplice\obj\x86\Debug\Backsplice.application
+C:\Users\JDH\Source\Repos\Backsplice-Classic\src\Backsplice\obj\x86\Debug\Backsplice.csproj.CopyComplete
