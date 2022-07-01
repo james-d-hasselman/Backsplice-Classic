@@ -36,13 +36,12 @@
 # For a complete CI/CD sample to get started with GitHub Action workflows for Desktop Applications,
 # refer to https://github.com/microsoft/github-actions-for-desktop-apps
 
-name: .NET Core Desktop
+name: Create Draft Release
 
 on:
   push:
-    branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
+    tags:
+    - '*'
 
 jobs:
 
@@ -50,7 +49,7 @@ jobs:
 
     strategy:
       matrix:
-        configuration: [Debug, Release]
+        configuration: [Release]
 
     runs-on: windows-latest  # For a list of available runner types, refer to
                              # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
@@ -60,6 +59,7 @@ jobs:
       Test_Project_Path: your-test-project-path                 # Replace with the path to your test project, i.e. MyWpfApp.Tests\MyWpfApp.Tests.csproj.
       Wap_Project_Directory: src\Setup    # Replace with the Wap project directory relative to the solution, i.e. MyWpfApp.Package.
       Wap_Project_Path: src\Setup\Setup.wapproj                   # Replace with the path to your Wap project, i.e. MyWpf.App.Package\MyWpfApp.Package.wapproj.
+      Setup_Project_Directory: src\Inno Setup
 
     steps:
     - name: Checkout
@@ -87,29 +87,27 @@ jobs:
       env:
         Configuration: ${{ matrix.configuration }}
 
-    # Decode the base 64 encoded pfx and save the Signing_Certificate
-    - name: Decode the pfx
-      run: |
-        $pfx_cert_byte = [System.Convert]::FromBase64String("${{ secrets.Base64_Encoded_Pfx }}")
-        $certificatePath = Join-Path -Path $env:Wap_Project_Directory -ChildPath GitHubActionsWorkflow.pfx
-        [IO.File]::WriteAllBytes("$certificatePath", $pfx_cert_byte)
-
-    # Create the app package by building and packaging the Windows Application Packaging project
-    - name: Create the app package
-      run: msbuild $env:Wap_Project_Path /p:Configuration=$env:Configuration /p:UapAppxPackageBuildMode=$env:Appx_Package_Build_Mode /p:Platform="AnyCPU" /p:AppxBundle=$env:Appx_Bundle /p:AppxBundlePlatforms="neutral" /p:PackageCertificateKeyFile=GitHubActionsWorkflow.pfx /p:PackageCertificatePassword="${{ secrets.Pfx_Key }}"
+    # Build the application
+    - name: Build the application
+      run: msbuild $env:Solution_Name /p:Configuration=$env:Configuration /p:Platform="AnyCPU"
       env:
-        Appx_Bundle: Always
-        Appx_Bundle_Platforms: AnyCPU
-        Appx_Package_Build_Mode: SideloadOnly
         Configuration: ${{ matrix.configuration }}
-
-    # Remove the pfx
-    - name: Remove the pfx
-      run: Remove-Item -path $env:Wap_Project_Directory\GitHubActionsWorkflow.pfx
-
-    # Upload the MSIX package: https://github.com/marketplace/actions/upload-a-build-artifact
-    - name: Upload build artifacts
+        
+    # Create the setup package
+    - name: Create the setup package
+      run: iscc.exe ${{ env.Setup_Project_Directory }}\backsplice.iss
+      
+    - name: Upload setup package
       uses: actions/upload-artifact@v3
       with:
-        name: MSIX Package
-        path: ${{ env.Wap_Project_Directory }}\AppPackages
+        name: Backsplice Setup
+        path: ${{ env.Setup_Project_Directory }}\Output\*
+      
+    - name: Create Release
+      uses: ncipollo/release-action@v1.10.0
+      with:
+        artifacts: "*.exe"
+        allowUpdates: true
+        artifactErrorsFailBuild: true
+        draft: true
+        generateReleaseNotes: true
