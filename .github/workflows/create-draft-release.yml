@@ -95,13 +95,13 @@ jobs:
         
     # Create the setup package
     - name: Create the setup package
-      run: iscc.exe ${{ env.Setup_Project_Directory }}\backsplice.iss
+      run: iscc.exe "${{ env.Setup_Project_Directory }}\backsplice.iss"
       
     - name: Upload setup package
       uses: actions/upload-artifact@v3
       with:
         name: Backsplice Setup
-        path: ${{ env.Setup_Project_Directory }}\Output\*
+        path: "${{ env.Setup_Project_Directory }}\Output\*"
       
     - name: Create Release
       uses: ncipollo/release-action@v1.10.0
