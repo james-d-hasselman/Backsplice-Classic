@@ -57,9 +57,7 @@ jobs:
     env:
       Solution_Name: src\Backsplice.sln                         # Replace with your solution name, i.e. MyWpfApp.sln.
       Test_Project_Path: your-test-project-path                 # Replace with the path to your test project, i.e. MyWpfApp.Tests\MyWpfApp.Tests.csproj.
-      Wap_Project_Directory: src\Setup    # Replace with the Wap project directory relative to the solution, i.e. MyWpfApp.Package.
-      Wap_Project_Path: src\Setup\Setup.wapproj                   # Replace with the path to your Wap project, i.e. MyWpf.App.Package\MyWpfApp.Package.wapproj.
-      Setup_Project_Directory: src\Inno Setup
+      Setup_Project_Directory: src\Setup
 
     steps:
     - name: Checkout
@@ -101,7 +99,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: Backsplice Setup
-        path: "${{ env.Setup_Project_Directory }}\Output\*"
+        path: ${{ env.Setup_Project_Directory }}\Output\*
       
     - name: Create Release
       uses: ncipollo/release-action@v1.10.0
