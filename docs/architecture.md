@@ -1174,10 +1174,6 @@ Release configuration, compiles the installer with Inno Setup, and creates a
 draft GitHub release with the installer attached. The workflow's test step is
 commented out.
 
-A second workflow, ".NET Core Desktop", runs on pushes and pull requests to
-`master`. It is meant to build a signed MSIX package from
-`src/Setup/Setup.wapproj`, which does not exist in the repository.
-
 ### 7.4 Requirements on the Computer
 
 - Windows with the .NET Framework 4.8.
@@ -1871,8 +1867,7 @@ paperwork has been created (9.4), so these have the highest impact.
     with TextRenderer to size its columns (8.4).
 11. **Naming.** The code uses `DoubleKnot` where the product is Doubleknot,
     and CampProgram represents a registration rather than a program.
-12. **Build and release.** The ".NET Core Desktop" workflow builds from a
-    packaging project that does not exist (7.3). The installer does not check
+12. **Build and release.** The installer does not check
     for the .NET Framework 4.8 or Excel, so a missing prerequisite shows up
     only when Backsplice runs (7.2). In `app.config`, the default settings
     are declared under the name `Backsplicelib.Properties.Settings` rather
