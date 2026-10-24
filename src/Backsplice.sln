@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.2.32616.157
+# Visual Studio Version 18
+VisualStudioVersion = 18.11.12306.390
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Backsplice", "Backsplice\Backsplice.csproj", "{AF2E69A5-36C6-46C7-B58A-FF02599647CC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{2CF40B21-F4D0-4199-91CF-C6123B3A1002}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "backsplicelib", "backsplicelib\backsplicelib.csproj", "{7508CEFB-8FB0-48ED-B71C-67BBDC40F232}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Backsplice.Tests", "Backsplice.Tests\Backsplice.Tests.csproj", "{FAEB2625-0765-41D3-9879-0C426A7DE761}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,13 +19,13 @@ Global
 		{AF2E69A5-36C6-46C7-B58A-FF02599647CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AF2E69A5-36C6-46C7-B58A-FF02599647CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AF2E69A5-36C6-46C7-B58A-FF02599647CC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2CF40B21-F4D0-4199-91CF-C6123B3A1002}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2CF40B21-F4D0-4199-91CF-C6123B3A1002}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2CF40B21-F4D0-4199-91CF-C6123B3A1002}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2CF40B21-F4D0-4199-91CF-C6123B3A1002}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7508CEFB-8FB0-48ED-B71C-67BBDC40F232}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7508CEFB-8FB0-48ED-B71C-67BBDC40F232}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7508CEFB-8FB0-48ED-B71C-67BBDC40F232}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FAEB2625-0765-41D3-9879-0C426A7DE761}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FAEB2625-0765-41D3-9879-0C426A7DE761}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FAEB2625-0765-41D3-9879-0C426A7DE761}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FAEB2625-0765-41D3-9879-0C426A7DE761}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
