@@ -399,3 +399,6 @@ FodyWeavers.xsd
 /src/Setup/SigningCertificate_Encoded.txt
 /src/Inno Setup/Output
 /src/Setup/Output
+
+# Local notes
+/docs/notes
