@@ -4,8 +4,19 @@
 
 **Date:** 2026-10-18
 
+**Implemented:** 2026-10-25
+
 **Addresses:** Baseline 11.2 item 1 (no automated tests). Prepares for the
 redesign ADRs that follow, which rely on these tests.
+
+## Contents
+
+- [Context](#context)
+- [Decision](#decision)
+- [Considered Options](#considered-options)
+- [Consequences](#consequences)
+- [Done When](#done-when)
+- [Documentation Updates](#documentation-updates)
 
 ## Context
 
@@ -35,17 +46,20 @@ The repository is public, and real Doubleknot exports contain scouts' names.
 
 **Framework and project.**
 
-- Use xUnit, with the `xunit`, `xunit.runner.visualstudio`, and
-  `Microsoft.NET.Test.Sdk` NuGet packages.
+- Use xUnit v3, with the `xunit.v3`, `xunit.runner.visualstudio`, and
+  `Microsoft.NET.Test.Sdk` NuGet packages, plus `Bogus` and
+  `DocumentFormat.OpenXml` (the same version as the application). As xUnit
+  v3 requires, the test project builds as an executable.
 - Replace the UnitTests project with an SDK-style test project,
   `src/Backsplice.Tests/Backsplice.Tests.csproj`, targeting .NET Framework
-  4.8, so tests run with `dotnet test` as well as in Visual Studio.
+  4.8. Tests run in Visual Studio's Test Explorer, and with `dotnet test`
+  once the application project builds with the `dotnet` tools.
 - Delete the empty test method.
 - Give the test project access to the application's internal classes with
   `[assembly: InternalsVisibleTo("Backsplice.Tests")]`, rather than making
   them public.
 
-**Fixtures.**
+**Test data.**
 
 - Roster workbooks are built in code by a test helper, using the OpenXML SDK,
   with the same six columns and layout as a Doubleknot export (baseline 8.3).
@@ -74,12 +88,7 @@ The repository is public, and real Doubleknot exports contain scouts' names.
 - **Tests that need Excel or a printer** are marked
   `[Trait("Category", "RequiresExcel")]` or
   `[Trait("Category", "RequiresPrinter")]`, and are run by hand on a machine
-  that has them. The usual test run excludes them with
-  `--filter "Category!=RequiresExcel&Category!=RequiresPrinter"`.
-- **Checks against real data**, such as running the new sorter on past
-  years' Excel-sorted roster copies, run locally only. They read data from a
-  folder outside the repository, given by the `BACKSPLICE_REAL_DATA_DIR`
-  environment variable, and are skipped when it is not set.
+  that has them. They are excluded from the usual test run by trait.
 
 **Seams.**
 
@@ -110,13 +119,18 @@ packaging project that does not exist (baseline 7.3, 11.2 item 12).
   attributes. xUnit was chosen because it is widely used for modern .NET,
   including by the .NET team's own projects, and it runs test classes in
   parallel by default.
-- **Fixtures:** building everything in code, or storing everything as files.
+- **Test data:** building everything in code, or storing everything as files.
   Rosters vary from test to test, so building them in code keeps each test
   self-contained. Templates are designed in a spreadsheet program and are
   hard to build in code, so they are stored as files.
 - **Project format:** keeping the old project format would have needed
-  `vstest.console` or Visual Studio to run tests. The SDK-style format works
-  with `dotnet test`.
+  `vstest.console` or Visual Studio to run tests. The SDK-style format also
+  works with `dotnet test`, once the projects it builds are SDK-style too.
+- **Real data:** checking the new sorter against past years' Excel-sorted
+  roster copies. Rejected: the sort only needs to group rows of the same
+  offering, keep their order, and ignore case, which synthetic tests can
+  specify fully. The formats in real exports are documented in baseline 8.3
+  and reproduced in synthetic data.
 - **CI:** running tests on every push and before each release. Deferred,
   because the application is small, has a single developer, and is updated
   infrequently.
@@ -136,6 +150,21 @@ packaging project that does not exist (baseline 7.3, 11.2 item 12).
   usual run, and the developer currently cannot run the Excel ones.
 - Nothing prevents a release from being built while tests fail; running them
   is a manual step. To be revisited if CI is set up.
+
+## Done When
+
+- `src/Backsplice.Tests` exists as an SDK-style project targeting .NET
+  Framework 4.8, using xUnit v3 and Bogus, and the old UnitTests project is
+  removed from the solution.
+- The application assembly declares
+  `[assembly: InternalsVisibleTo("Backsplice.Tests")]`.
+- DoubleKnotRoster has a constructor that takes a Stream.
+- A roster builder builds a roster workbook that DoubleKnotRoster opens and
+  reads correctly, shown by a passing test.
+- `Default Blank.xlsx` is in `TestData/Templates` and is copied to the test
+  output folder.
+- `.github/workflows/dotnet-desktop.yml` is deleted.
+- The documentation updates below are made.
 
 ## Documentation Updates
 

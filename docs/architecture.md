@@ -1,11 +1,56 @@
 # Backsplice
 
+## Contents
+
+- [1. Introduction](#introduction)
+- [2. Constraints](#constraints)
+- [3. Context and Scope](#context-and-scope)
+- [4. Solution Strategy](#solution-strategy)
+- [5. Building Block View](#building-block-view)
+- [6. Runtime View](#runtime-view)
+  - [6.1 Create Paperwork](#create-paperwork)
+  - [6.2 Print Paperwork](#print-paperwork)
+  - [6.3 Find Scout](#find-scout)
+  - [6.4 Drop Program](#drop-program)
+  - [6.5 Add Program](#add-program)
+- [7 Deployment View](#deployment-view)
+  - [7.1 Infrastructure](#infrastructure)
+  - [7.2 Installation](#installation)
+  - [7.3 Build and Release](#build-and-release)
+  - [7.4 Requirements on the Computer](#requirements-on-the-computer)
+- [8 Cross-cutting Concepts](#cross-cutting-concepts)
+  - [8.1 File System as the Data Store](#file-system-as-the-data-store)
+  - [8.2 Spreadsheet Access](#spreadsheet-access)
+  - [8.3 Doubleknot Roster Format](#doubleknot-roster-format)
+  - [8.4 Paperwork Files](#paperwork-files)
+  - [8.5 Domain Concepts and Identity](#domain-concepts-and-identity)
+  - [8.6 Ordering](#ordering)
+  - [8.7 Configuration](#configuration)
+  - [8.8 User Interface Conventions](#user-interface-conventions)
+  - [8.9 Long-Running Work](#long-running-work)
+  - [8.10 Error Handling](#error-handling)
+- [9 Architecture Decisions](#architecture-decisions)
+  - [9.1 Use Existing Excel Paperwork Templates](#use-existing-excel-paperwork-templates)
+  - [9.2 Store Data as Files, Without a Database](#store-data-as-files-without-a-database)
+  - [9.3 Use the OpenXML SDK for Spreadsheet Files](#use-the-openxml-sdk-for-spreadsheet-files)
+  - [9.4 Use the Weekly Doubleknot Export as Input](#use-the-weekly-doubleknot-export-as-input)
+  - [9.5 Build a Single-User Windows Desktop Application](#build-a-single-user-windows-desktop-application)
+  - [9.6 Partition Stored Data by Year](#partition-stored-data-by-year)
+  - [9.7 Fall Back When a Program Has No Template](#fall-back-when-a-program-has-no-template)
+- [10 Quality Requirements](#quality-requirements)
+- [11 Risks and Technical Debt](#risks-and-technical-debt)
+  - [11.1 Risks](#risks)
+  - [11.2 Technical Debt](#technical-debt)
+- [12 Glossary](#glossary)
+
 ## 1. Introduction
+
+[↑ Contents](#contents)
 
 *Note: This document was produced post-hoc from a combination of memory,
 reading the code, and using other information from the Git repository. This
 document serves as a foundation from which to make improvements to the design.
-As such, some sections of the document -- particularly section 6 -- are
+As such, some sections of the document -- particularly section [6](#runtime-view) -- are
 intentionally excessively detailed.*
 
 Backsplice is a software program intended for use in Boy Scout camps that use
@@ -16,9 +61,13 @@ the week.
 
 ## 2. Constraints
 
+[↑ Contents](#contents)
+
 - Must run on Windows
 
 ## 3. Context and Scope
+
+[↑ Contents](#contents)
 
 ```mermaid
 C4Context
@@ -37,12 +86,16 @@ C4Context
 
 ## 4. Solution Strategy
 
+[↑ Contents](#contents)
+
 Implement Backsplice in C# .NET. The .NET platform is a Microsoft product and
 makes it easy to integrate with other Microsoft products such as Excel. Using
 Excel via COM interop makes it easy to print out the paperwork spreadsheets
 which is a key feature of Backsplice.
 
 ## 5. Building Block View
+
+[↑ Contents](#contents)
 
 ```mermaid
 ---
@@ -137,33 +190,37 @@ classDiagram
 - **BackspliceMain** is the main screen of Backsplice. The user reaches all
   functionality through this screen. It also provides the application's
   settings, through static properties, and the scout search used by Find Scout
-  and Drop/Add (6.3.1).
+  and Drop/Add ([6.3.1](#search-roster-for-scout)).
 - **CreatePaperwork, PrintPaperwork, FindScout, DropAdd, AddScout, and
   Preferences** are the dialogs for each feature. Each implements its feature
-  directly, including its file handling and business rules (8.8).
+  directly, including its file handling and business rules ([8.8](#user-interface-conventions)).
 - **DoubleKnotRoster, ProgramPaperwork, and ExcelSpreadsheet** read and write
   the roster copy, filled paperwork templates, and plain spreadsheets with the
-  OpenXML SDK (8.2). They hide how values are stored and parsed in the files,
-  but callers address the data by row and sheet (8.2, 8.3).
+  OpenXML SDK ([8.2](#spreadsheet-access)). They hide how values are stored and parsed in the files,
+  but callers address the data by row and sheet ([8.2](#spreadsheet-access), [8.3](#doubleknot-roster-format)).
 - **Scout, ScoutList, and CampProgram** hold scouts and registrations while a
-  feature works with them (8.5). ScoutList sorts itself according to the sort
-  settings (8.6).
+  feature works with them ([8.5](#domain-concepts-and-identity)). ScoutList sorts itself according to the sort
+  settings ([8.6](#ordering)).
 - **Settings** is the .NET application settings class, read mostly through
-  BackspliceMain and changed in Preferences (8.7).
+  BackspliceMain and changed in Preferences ([8.7](#configuration)).
 - **Microsoft Excel** is used through COM Interop to sort the roster copy and
-  to print paperwork (8.2, 9.3).
+  to print paperwork ([8.2](#spreadsheet-access), [9.3](#use-the-openxml-sdk-for-spreadsheet-files)).
 
 ## 6. Runtime View
+
+[↑ Contents](#contents)
 
 This section describes the runtime view of each feature of Backsplice.
 
 The scenarios below follow the intended weekly workflow: the program director
 exports the week's registrations from Doubleknot, paperwork is created from
-the export (6.1), registrations are corrected with Drop and Add (6.4, 6.5),
-and the paperwork is printed (6.2). Find Scout (6.3) can be used at any point
+the export ([6.1](#create-paperwork)), registrations are corrected with Drop and Add ([6.4](#drop-program), [6.5](#add-program)),
+and the paperwork is printed ([6.2](#print-paperwork)). Find Scout ([6.3](#find-scout)) can be used at any point
 after paperwork is created. Backsplice does not enforce this order.
 
 ### 6.1 Create Paperwork
+
+[↑ Contents](#contents)
 
 The diagrams in this section show the classes and method calls that implement
 the create paperwork feature from the perspective of the CreatePaperwork class
@@ -304,7 +361,7 @@ sequenceDiagram
 
 The diagram below shows the flow when no template exists for the program and
 the default blank template is used. The blank template is filled exactly like a
-regular template (see 6.1.1), then the saved workbook is reopened to write the
+regular template (see [6.1.1](#fill-regular-template)), then the saved workbook is reopened to write the
 program name.
 
 ```mermaid
@@ -362,6 +419,8 @@ sequenceDiagram
 ```
 
 ### 6.2 Print Paperwork
+
+[↑ Contents](#contents)
 
 The diagram below shows the flow when the user clicks Print (button or menu).
 Printing runs synchronously on the UI thread. The user's choices of week,
@@ -483,10 +542,12 @@ sequenceDiagram
 
 ### 6.3 Find Scout
 
+[↑ Contents](#contents)
+
 The diagram below shows the flow when the user searches for a scout. OnFind
 runs on the UI thread from the Find button or menu item, and again after the
 Drop/Add dialog closes. The search itself is delegated to the static method
-BackspliceMain.FindScout (see 6.3.1), and the results are shown in the
+BackspliceMain.FindScout (see [6.3.1](#search-roster-for-scout)), and the results are shown in the
 dgvMeritBadges grid.
 
 ```mermaid
@@ -528,7 +589,7 @@ sequenceDiagram
 
 The diagram below shows how BackspliceMain.FindScout searches the week's copy of
 the Doubleknot roster. The roster is located by file name in the week's folder,
-following the naming used when paperwork is created (see 6.1). Each matching
+following the naming used when paperwork is created (see [6.1](#create-paperwork)). Each matching
 roster row becomes a CampProgram, which is inserted into the results in period
 order: "All" periods first, numbered periods in ascending order, and anything
 else at the end. The troop number is taken from the first matching row.
@@ -636,13 +697,15 @@ sequenceDiagram
 
 ### 6.4 Drop Program
 
+[↑ Contents](#contents)
+
 The diagram below shows the flow when the user drops the selected program for
 the scout shown in the Drop/Add dialog. OnDrop runs on the UI thread from the
 Drop button, the Drop menu item, or a double-click on a grid cell. The scout's
 week, name, and troop are read back from the dialog's labels, and the program
 and period from the selected grid row. The scout is removed from the week's
-roster copy first (see 6.4.1), then from the program's paperwork file
-(see 6.4.2).
+roster copy first (see [6.4.1](#delete-from-doubleknot-roster)), then from the program's paperwork file
+(see [6.4.2](#delete-from-program-paperwork)).
 
 ```mermaid
 sequenceDiagram
@@ -736,7 +799,7 @@ sequenceDiagram
 
 The diagram below shows how the scout is removed from the program's paperwork
 file. The file is either a filled paperwork template or a plain Excel
-spreadsheet (see 6.1), and the method checks which before opening it. The
+spreadsheet (see [6.1](#create-paperwork)), and the method checks which before opening it. The
 search stops at the first row that matches. In a plain spreadsheet the name is
 compared in "Last, First" form.
 
@@ -796,12 +859,14 @@ sequenceDiagram
 
 ### 6.5 Add Program
 
+[↑ Contents](#contents)
+
 The diagram below shows the flow when the scout shown in the Drop/Add dialog
 is added to a program. OnAdd runs on the UI thread from the Add button
 or menu item. The scout's details are read back from the dialog's labels and
 passed to the AddScout dialog, which performs the addition. When AddScout
 closes, the Drop/Add dialog searches for the scout again to refresh its
-display (see 6.5.1).
+display (see [6.5.1](#refresh-scout)).
 
 ```mermaid
 sequenceDiagram
@@ -825,8 +890,8 @@ sequenceDiagram
 
 The diagram below shows the Drop/Add dialog's own search, used after AddScout
 closes and when the user searches from within the Drop/Add dialog. It follows
-the same flow as Find Scout (see 6.3) and uses the same search
-(BackspliceMain.FindScout, see 6.3.1). It differs in three ways: it takes the
+the same flow as Find Scout (see [6.3](#find-scout)) and uses the same search
+(BackspliceMain.FindScout, see [6.3.1](#search-roster-for-scout)). It differs in three ways: it takes the
 week and name as parameters, it checks for a null result, and on success it
 enables Add but leaves Drop disabled until a grid row is selected.
 
@@ -870,7 +935,7 @@ loads. It reads the week's roster copy in order and counts consecutive rows
 with the same program and period, adding one grid row per group with the
 number of registered scouts. Groups whose program contains "Summer Camp Week"
 are skipped. The roster path found here is kept in a field and used later by
-Add (see 6.5.3).
+Add (see [6.5.3](#add-scout-to-program)).
 
 ```mermaid
 sequenceDiagram
@@ -932,7 +997,7 @@ constructor. The scout is inserted into the week's roster copy first, before
 the first existing row in the same program and period whose last name sorts
 at or after the scout's. The scout is then inserted into the program's
 paperwork file, using one of two procedures depending on the file type
-(see 6.5.4 and 6.5.5), and the dialog closes.
+(see [6.5.4](#insert-into-paperwork-template) and [6.5.5](#insert-into-excel-spreadsheet)), and the dialog closes.
 
 ```mermaid
 sequenceDiagram
@@ -1003,7 +1068,7 @@ settings. SortScouts is read when the dialog is constructed; SortAlphabetically
 and SortByTroop are read directly from the application settings at the time of
 the insert. The comparisons below are against the existing row being examined,
 with names in "Last, First" form and troops compared as integers. SortScouts
-is on whenever either of the other two settings is on (8.7).
+is on whenever either of the other two settings is on ([8.7](#configuration)).
 
 | SortScouts | SortAlphabetically | SortByTroop | Insert before the first row where             |
 |------------|--------------------|-------------|-----------------------------------------------|
@@ -1017,7 +1082,7 @@ is on whenever either of the other two settings is on (8.7).
 The diagram below shows how the scout is inserted into a filled paperwork
 template. Each sheet is searched in turn. The scout is written into the first
 empty row found, or inserted before the first row that satisfies the position
-rule (see the table in 6.5.3), whichever comes first.
+rule (see the table in [6.5.3](#add-scout-to-program)), whichever comes first.
 
 ```mermaid
 sequenceDiagram
@@ -1058,7 +1123,7 @@ sequenceDiagram
 
 The diagram below shows how the scout is inserted into a plain Excel
 spreadsheet. The scout is inserted before the first row that satisfies the
-position rule (see the table in 6.5.3). If no row does, the scout is
+position rule (see the table in [6.5.3](#add-scout-to-program)). If no row does, the scout is
 appended after the last row.
 
 ```mermaid
@@ -1096,11 +1161,15 @@ sequenceDiagram
 
 ## 7 Deployment View
 
+[↑ Contents](#contents)
+
 Backsplice runs on a single Windows computer, the program director's computer
-in their office (9.5). Apart from the Doubleknot export, the printer, and the
+in their office ([9.5](#build-a-single-user-windows-desktop-application)). Apart from the Doubleknot export, the printer, and the
 installer, everything Backsplice uses is on that computer.
 
 ### 7.1 Infrastructure
+
+[↑ Contents](#contents)
 
 ```mermaid
 flowchart LR
@@ -1134,15 +1203,17 @@ flowchart LR
 | Element | Description |
 | --- | --- |
 | Program director's computer | Windows computer in the program director's office, with the .NET Framework 4.8. The only computer Backsplice runs on. |
-| Backsplice.exe | The Windows Forms application, targeting the .NET Framework 4.8, installed per user (7.2). |
-| DocumentFormat.OpenXml.dll | The OpenXML SDK, version 2.16.0, installed alongside Backsplice.exe. Used to read and write `.xlsx` files (8.2). |
-| Microsoft Excel | Must be installed on the same computer. Used through COM Interop to sort the roster copy and to print (8.2, 9.3). The Interop types (Office 2013, version 15) are embedded in Backsplice.exe, so no Interop assembly is installed. |
-| Backsplice root | `My Documents\Backsplice` by default, or a location chosen in Preferences (8.1). Holds the default template directory and each year's rosters and paperwork. It is not backed up. |
-| Application settings | .NET user settings, saved in a `user.config` file in the user's local application data folder (8.7). |
-| Weekly export | The Doubleknot export, saved on the computer by the program director and selected in Create Paperwork. Backsplice copies it into the week's folder (9.4). |
-| Printer | Any printer available to Excel on the computer, chosen in the print dialog each time paperwork is printed (6.2). |
+| Backsplice.exe | The Windows Forms application, targeting the .NET Framework 4.8, installed per user ([7.2](#installation)). |
+| DocumentFormat.OpenXml.dll | The OpenXML SDK, version 2.16.0, installed alongside Backsplice.exe. Used to read and write `.xlsx` files ([8.2](#spreadsheet-access)). |
+| Microsoft Excel | Must be installed on the same computer. Used through COM Interop to sort the roster copy and to print ([8.2](#spreadsheet-access), [9.3](#use-the-openxml-sdk-for-spreadsheet-files)). The Interop types (Office 2013, version 15) are embedded in Backsplice.exe, so no Interop assembly is installed. |
+| Backsplice root | `My Documents\Backsplice` by default, or a location chosen in Preferences ([8.1](#file-system-as-the-data-store)). Holds the default template directory and each year's rosters and paperwork. It is not backed up. |
+| Application settings | .NET user settings, saved in a `user.config` file in the user's local application data folder ([8.7](#configuration)). |
+| Weekly export | The Doubleknot export, saved on the computer by the program director and selected in Create Paperwork. Backsplice copies it into the week's folder ([9.4](#use-the-weekly-doubleknot-export-as-input)). |
+| Printer | Any printer available to Excel on the computer, chosen in the print dialog each time paperwork is printed ([6.2](#print-paperwork)). |
 
 ### 7.2 Installation
+
+[↑ Contents](#contents)
 
 Backsplice is installed with an Inno Setup installer (`src/Setup/backsplice.iss`),
 published as a release in the project's GitHub repository. The current version
@@ -1154,38 +1225,56 @@ is 1.1.
   DocumentFormat.OpenXml.dll.
 - It installs `Default Blank.xlsx` in `My Documents\Backsplice\templates`,
   the default template directory when the default save location is used
-  (8.1, 8.4).
+  ([8.1](#file-system-as-the-data-store), [8.4](#paperwork-files)).
 - It adds a Start menu shortcut and, optionally, a desktop shortcut, and
   offers to start Backsplice when it finishes.
 - It does not install or check for the .NET Framework 4.8 or Excel.
 - Program templates are not installed. The program director places them in
-  the template directory (8.4).
+  the template directory ([8.4](#paperwork-files)).
 
 ### 7.3 Build and Release
 
-The solution, `src/Backsplice.sln`, contains the Backsplice application,
-a UnitTests project, and a backsplicelib library project. NuGet packages
-(DocumentFormat.OpenXml and the Excel Interop package) are restored from
-`packages.config`.
+[↑ Contents](#contents)
+
+The solution, `src/Backsplice.sln`, contains the Backsplice application, a
+backsplicelib library project, and Backsplice.Tests, an SDK-style xUnit v3
+test project targeting .NET Framework 4.8. The application and backsplicelib
+restore their NuGet packages (DocumentFormat.OpenXml and the Excel Interop
+package) from `packages.config`; the test project uses package references.
+
+Tests run in Visual Studio's Test Explorer. To run them from the command
+line, build the solution with Visual Studio's MSBuild, then run
+`dotnet test --project src\Backsplice.Tests --no-build`. The application
+project cannot yet be built with the `dotnet` tools, because its forms
+contain non-string resources. `global.json` at the repository root opts in
+to the Microsoft Testing Platform mode of `dotnet test`, which xUnit v3
+requires with the .NET 10 SDK. Tests that need Excel or a printer are marked
+with a trait and excluded from the usual run (ADR 0001); there are none yet.
 
 Releases are built by the GitHub Actions workflow "Create Draft Release" when
 a tag is pushed. It restores and builds the solution with MSBuild in the
 Release configuration, compiles the installer with Inno Setup, and creates a
 draft GitHub release with the installer attached. The workflow's test step is
-commented out.
+commented out, so tests are not run as part of a release.
 
 ### 7.4 Requirements on the Computer
+
+[↑ Contents](#contents)
 
 - Windows with the .NET Framework 4.8.
 - Microsoft Excel, for Create Paperwork (sorting) and Print Paperwork.
 - A paperwork template for each program that should get its own paperwork,
   in the template directory, plus `Default Blank.xlsx` if NoTemplate is set to
-  2 (8.4, 9.7).
+  2 ([8.4](#paperwork-files), [9.7](#fall-back-when-a-program-has-no-template)).
 - A printer.
 
 ## 8 Cross-cutting Concepts
 
+[↑ Contents](#contents)
+
 ### 8.1 File System as the Data Store
+
+[↑ Contents](#contents)
 
 Backsplice has no database. All state lives in files under a single directory
 tree, and each feature locates the files it needs by folder and file name.
@@ -1228,19 +1317,21 @@ Print and the Print period list consider only files ending in `.xls` or
 **System of record.** Once paperwork has been created, the week's roster copy
 and the paperwork files are the system of record. Find reads the roster copy;
 Drop and Add change both the roster copy and the program's paperwork file
-(see 6.4 and 6.5). The original Doubleknot export is not used again.
+(see [6.4](#drop-program) and [6.5](#add-program)). The original Doubleknot export is not used again.
 
 Files are opened, changed, and saved within a single operation. There is no
 locking; Backsplice assumes a single user.
 
 ### 8.2 Spreadsheet Access
 
+[↑ Contents](#contents)
+
 Backsplice uses two technologies to work with spreadsheets.
 
 - **OpenXML SDK.** The three wrapper classes, DoubleKnotRoster,
   ProgramPaperwork, and ExcelSpreadsheet, read and write `.xlsx` files
   directly, using the DocumentFormat.OpenXml package, currently version 2.16.0
-  (7.1). Excel is not required for these operations.
+  ([7.1](#infrastructure)). Excel is not required for these operations.
 - **Excel COM Interop.** Used only to sort the roster copy before paperwork is
   created (CreatePaperwork.SortRoster) and to print paperwork
   (PrintPaperwork.PrintExcelFile). Both create an Excel application instance,
@@ -1271,6 +1362,8 @@ Backsplice uses two technologies to work with spreadsheets.
 
 ### 8.3 Doubleknot Roster Format
 
+[↑ Contents](#contents)
+
 The roster is a workbook exported from Doubleknot with a single sheet. Row 1
 holds column headers, and each following row is one registration of one
 person for one program offering or for the camp week. DoubleKnotRoster
@@ -1285,8 +1378,8 @@ interprets it as follows.
 
 Any further columns in the export are ignored.
 
-Programs include merit badges (`Archery MB`), BSA awards (`Snorkeling BSA`),
-and other activities and events (`Brownsea`, `Night Climb`). Periods are
+Programs include merit badges (`Archery MB`), BSA programs (`Brownsea`, `Snorkeling BSA`),
+and other activities and events (`Night Climb`). Periods are
 numbered time slots (`period 3`; capitalization varies), combined slots
 (`Periods 1 & 2`, `all periods`), or named times (`Thursday Dinner`,
 `Wed. Evening`).
@@ -1296,19 +1389,21 @@ Each person registered for the camp week has a row whose description reads
 
 All values are stored in the workbook's shared string table, and empty cells
 are left out of the file. Because columns A–C are found by their position in
-the row (8.2), a row with no first name cell is misread; this occurs only in
+the row ([8.2](#spreadsheet-access)), a row with no first name cell is misread; this occurs only in
 camp-week rows. Rows inserted by Add have only columns A–D, with the
 description written as `{program} MB ({period})`.
 
 ### 8.4 Paperwork Files
 
+[↑ Contents](#contents)
+
 Each program offering has one paperwork file, which is either a filled
 paperwork template or a plain spreadsheet.
 
-**Templates.** Templates are kept in the template directory (8.1, 8.7), one
+**Templates.** Templates are kept in the template directory ([8.1](#file-system-as-the-data-store), [8.7](#configuration)), one
 per program, named `{Program}.xlsx`, plus `Default Blank.xlsx`. Create
 Paperwork copies the program's template, falling back according to the
-MakePaperwork and NoTemplate settings (8.7, 6.1). A template must provide:
+MakePaperwork and NoTemplate settings ([8.7](#configuration), [6.1](#create-paperwork)). A template must provide:
 
 - Names in column A and troops in column B, on rows 13–31, which holds 19
   scouts. Rows 1–31 must all exist, even where empty.
@@ -1337,6 +1432,8 @@ written by ExcelSpreadsheet have none of these.
 
 ### 8.5 Domain Concepts and Identity
 
+[↑ Contents](#contents)
+
 - **Scout.** Identified by first name, last name, and troop. There is no
   other identifier. Names appear in three forms: separate first and last name
   (roster), `Last, First` (paperwork files and Scout), and `First Last`
@@ -1344,7 +1441,7 @@ written by ExcelSpreadsheet have none of these.
 - **Troop.** A number held as text, or `PROVO` for provisional campers.
 - **Program offering.** Identified by program name and period. A period is
   free text from the roster; text starting with "All", "Period", or "Late"
-  is significant for ordering (8.6).
+  is significant for ordering ([8.6](#ordering)).
 - **Domain classes.**
   - *Scout* holds a scout's name as a single `Last, First` string and the
     troop as text, with a numeric form that is 0 when the text is not a
@@ -1352,7 +1449,7 @@ written by ExcelSpreadsheet have none of these.
     exactly; Create Paperwork uses this to remove duplicate registrations
     within an offering.
   - *ScoutList* is a list of Scout objects for one offering, used during
-    Create Paperwork. It sorts itself according to the sort settings (8.6).
+    Create Paperwork. It sorts itself according to the sort settings ([8.6](#ordering)).
   - *CampProgram* holds one of a scout's registrations, as program name,
     period, and period number. Two CampProgram objects are equal when all
     three match; Find Scout uses this to remove duplicate registrations from
@@ -1360,13 +1457,15 @@ written by ExcelSpreadsheet have none of these.
 
 ### 8.6 Ordering
 
+[↑ Contents](#contents)
+
 | Where | What is ordered | Rule |
 | --- | --- | --- |
-| Create Paperwork (6.1) | Roster copy | Sorted by column D (description), ascending, using Excel, before rows are grouped by program and period. Row 2 is treated as a header and keeps its place (11.1, item 2) |
-| Create Paperwork (6.1) | Scouts in an offering | When SortScouts is on, ScoutList.Sort orders them by the sort settings (below) |
-| Find Scout (6.3.1) | A scout's registrations | "All" periods first, then numbered periods ascending, then everything else, in roster order within each group |
-| Add (6.5.3) | Roster copy | Inserted before the first row of the same offering whose last name sorts at or after the scout's |
-| Add (6.5.3–6.5.5) | Paperwork file | By name and/or troop, according to the sort settings (table in 6.5.3) |
+| Create Paperwork ([6.1](#create-paperwork)) | Roster copy | Sorted by column D (description), ascending, using Excel, before rows are grouped by program and period. Row 2 is treated as a header and keeps its place ([11.1](#risks), item 2) |
+| Create Paperwork ([6.1](#create-paperwork)) | Scouts in an offering | When SortScouts is on, ScoutList.Sort orders them by the sort settings (below) |
+| Find Scout ([6.3.1](#search-roster-for-scout)) | A scout's registrations | "All" periods first, then numbered periods ascending, then everything else, in roster order within each group |
+| Add ([6.5.3](#add-scout-to-program)) | Roster copy | Inserted before the first row of the same offering whose last name sorts at or after the scout's |
+| Add ([6.5.3](#add-scout-to-program)–[6.5.5](#insert-into-excel-spreadsheet)) | Paperwork file | By name and/or troop, according to the sort settings (table in [6.5.3](#add-scout-to-program)) |
 
 ScoutList.Sort reads SortAlphabetically and SortByTroop when it is called:
 
@@ -1382,13 +1481,15 @@ Troop numbers are compared as integers, with non-numeric troops such as
 
 ### 8.7 Configuration
 
+[↑ Contents](#contents)
+
 Settings are .NET application settings, edited in the Preferences dialog and
 saved when the user applies them.
 
 | Setting | Meaning | Set in Preferences |
 | --- | --- | --- |
-| UseDefaultSaveDirectory, SaveDirectory | Where the Backsplice root is (8.1) | Save location: default or other |
-| UseDefaultTemplateDirectory, TemplateDirectory | Where templates are (8.4) | Template location: default or other |
+| UseDefaultSaveDirectory, SaveDirectory | Where the Backsplice root is ([8.1](#file-system-as-the-data-store)) | Save location: default or other |
+| UseDefaultTemplateDirectory, TemplateDirectory | Where templates are ([8.4](#paperwork-files)) | Template location: default or other |
 | MakePaperwork | Fill templates (on) or create plain spreadsheets (off) | Create paperwork or spreadsheets |
 | NoTemplate | When a program has no template: 1 skip, 2 blank template, 3 plain spreadsheet | No-template action; set to 3 when MakePaperwork is off |
 | SortAlphabetically, SortByTroop | Sort keys for scouts | Two check boxes |
@@ -1407,6 +1508,8 @@ reads SortScouts when the dialog is created. Other code reads settings at the
 time of use.
 
 ### 8.8 User Interface Conventions
+
+[↑ Contents](#contents)
 
 - **Navigation.** The main form opens each feature as a modal dialog: Create
   Paperwork, Print Paperwork, Find Scout, Drop/Add, and Preferences. Print,
@@ -1427,11 +1530,15 @@ time of use.
 
 ### 8.9 Long-Running Work
 
+[↑ Contents](#contents)
+
 Only Create Paperwork runs in the background. It uses a BackgroundWorker,
 updates the progress bar through Control.Invoke, and restores the form when
-the worker completes (6.1). Print, Find, Drop, and Add run on the UI thread.
+the worker completes ([6.1](#create-paperwork)). Print, Find, Drop, and Add run on the UI thread.
 
 ### 8.10 Error Handling
+
+[↑ Contents](#contents)
 
 Errors are detected by checking for the expected folders and files, and
 reported where they are detected with a message box, including from
@@ -1442,7 +1549,11 @@ exceptions go to the default Windows Forms handler.
 
 ## 9 Architecture Decisions
 
+[↑ Contents](#contents)
+
 ### 9.1 Use Existing Excel Paperwork Templates
+
+[↑ Contents](#contents)
 
 **Status:** Accepted
 
@@ -1455,7 +1566,7 @@ Completed paperwork is kept offline in binders.
 **Decision.** Backsplice produces paperwork by filling copies of the existing
 Excel templates with the scouts registered for each program offering, rather
 than defining its own document format. Templates remain user-maintained Excel
-workbooks, one per program (8.4).
+workbooks, one per program ([8.4](#paperwork-files)).
 
 **Rationale.** The templates were already in use and familiar to staff, and
 the end product has to be a printed form that works without electricity.
@@ -1465,18 +1576,18 @@ without changing the paperwork staff use in the field.
 **Consequences.**
 
 - Paper is the medium staff work from; the files exist to be printed. Print
-  Paperwork (6.2) is a core function, not an export.
+  Paperwork ([6.2](#print-paperwork)) is a core function, not an export.
 - What staff record on the paperwork exists only on paper, in the binders.
   Backsplice's files hold who is registered for each offering, not what
   happened during the week.
 - Backsplice must follow the templates' layout rather than define it. The
-  template contract in 8.4 (data rows 13–31, name and troop columns, the
+  template contract in [8.4](#paperwork-files) (data rows 13–31, name and troop columns, the
   page header's Week and Period sections) describes what Backsplice expects
   of templates.
 - Templates can be changed in Excel without changing Backsplice, as long as
-  they keep to the contract in 8.4.
+  they keep to the contract in [8.4](#paperwork-files).
 - A printed sheet holds a fixed number of scouts, so larger programs span
-  several sheets with page numbering (8.4).
+  several sheets with page numbering ([8.4](#paperwork-files)).
 - The intended weekly sequence is Create Paperwork, then any drops and adds,
   then Print Paperwork, so that the printed paperwork includes all changes.
   Nothing in Backsplice enforces this order. A drop or add made after printing
@@ -1484,13 +1595,15 @@ without changing the paperwork staff use in the field.
 
 ### 9.2 Store Data as Files, Without a Database
 
+[↑ Contents](#contents)
+
 **Status:** Accepted
 
 **Context.** Backsplice's output is filled Excel templates that staff print
-(9.1). Camp staff who use Backsplice are not technical users.
+([9.1](#use-existing-excel-paperwork-templates)). Camp staff who use Backsplice are not technical users.
 
 **Decision.** Backsplice keeps all of its data as files in a folder tree:
-the week's roster copy and one paperwork file per program offering (8.1).
+the week's roster copy and one paperwork file per program offering ([8.1](#file-system-as-the-data-store)).
 There is no database.
 
 **Rationale.** The paperwork has to exist as Excel files to be printed, so
@@ -1507,15 +1620,17 @@ non-technical users to use, despite its advantages for searching and Drop/Add.
 - Staff can find, open, print, and copy paperwork with Windows Explorer and
   Excel, without Backsplice.
 - Each feature finds the data it needs by folder and file naming
-  conventions (8.1). Moving or renaming files outside Backsplice can make them
+  conventions ([8.1](#file-system-as-the-data-store)). Moving or renaming files outside Backsplice can make them
   invisible to it.
 - Searching for a scout means reading the week's roster copy row by row
-  (6.3.1).
+  ([6.3.1](#search-roster-for-scout)).
 - Drop and Add must change two files, the roster copy and the program's
-  paperwork, and keep them consistent themselves (6.4, 6.5). There are no
+  paperwork, and keep them consistent themselves ([6.4](#drop-program), [6.5](#add-program)). There are no
   transactions or locking.
 
 ### 9.3 Use the OpenXML SDK for Spreadsheet Files
+
+[↑ Contents](#contents)
 
 **Status:** Accepted, November 2010
 
@@ -1528,7 +1643,7 @@ was much nicer to work with.
 
 **Decision.** Replace COM Interop with the OpenXML SDK 2.0 wherever possible.
 The three wrapper classes (DoubleKnotRoster, ProgramPaperwork,
-ExcelSpreadsheet) read and write `.xlsx` files directly with the SDK (8.2).
+ExcelSpreadsheet) read and write `.xlsx` files directly with the SDK ([8.2](#spreadsheet-access)).
 COM Interop is kept for printing (PrintPaperwork.PrintExcelFile) and for
 sorting the roster copy (CreatePaperwork.SortRoster).
 
@@ -1550,11 +1665,13 @@ while Excel sorts the sheet in a single operation.
   `.xls`, the workaround is to open it in Excel and save it as `.xlsx` before
   creating paperwork.
 - The wrappers work at the level of rows and cells in the file's XML, so
-  callers address data by row number (8.2).
+  callers address data by row number ([8.2](#spreadsheet-access)).
 - The SDK has since been updated from version 2.0 to the DocumentFormat.OpenXml
-  NuGet package, currently version 2.16.0 (7.1).
+  NuGet package, currently version 2.16.0 ([7.1](#infrastructure)).
 
 ### 9.4 Use the Weekly Doubleknot Export as Input
+
+[↑ Contents](#contents)
 
 **Status:** Accepted
 
@@ -1564,9 +1681,9 @@ registrations from Doubleknot as an Excel workbook. This was the established
 process before Backsplice.
 
 **Decision.** The weekly Doubleknot export is Backsplice's only input. Create
-Paperwork copies the export into the week's folder (8.1) and works from the
+Paperwork copies the export into the week's folder ([8.1](#file-system-as-the-data-store)) and works from the
 copy. From then on, the copy is the system of record for the week: Find reads
-it, and Drop and Add change it (6.3–6.5). Drops and adds are not entered in
+it, and Drop and Add change it ([6.3](#find-scout)–[6.5](#add-program)). Drops and adds are not entered in
 Doubleknot.
 
 **Rationale.** Backsplice fits the existing process: the program director
@@ -1575,19 +1692,21 @@ that export as it is.
 
 **Consequences.**
 
-- The roster format is defined by Doubleknot, not Backsplice (8.3). A change
+- The roster format is defined by Doubleknot, not Backsplice ([8.3](#doubleknot-roster-format)). A change
   to the export's layout or description text requires a change to
   DoubleKnotRoster.
 - Paperwork can only be created once the director has produced the week's
   export.
 - After paperwork is created, the week's copy is the only up-to-date record
   of registrations. Doubleknot keeps the registrations as they were at export.
-  The copy is not backed up (7.1).
+  The copy is not backed up ([7.1](#infrastructure)).
 - Running Create Paperwork again for a week overwrites the copy with the
   export and regenerates the paperwork, discarding any drops and adds made
   since.
 
 ### 9.5 Build a Single-User Windows Desktop Application
+
+[↑ Contents](#contents)
 
 **Status:** Accepted
 
@@ -1605,16 +1724,18 @@ extremely easy to work with.
 
 **Consequences.**
 
-- There is no concurrent use to handle, so files are not locked (8.1).
+- There is no concurrent use to handle, so files are not locked ([8.1](#file-system-as-the-data-store)).
 - Backsplice runs only on Windows with the .NET Framework 4.8, and needs
-  Excel for sorting and printing (7.4, 9.3).
+  Excel for sorting and printing ([7.4](#requirements-on-the-computer), [9.3](#use-the-openxml-sdk-for-spreadsheet-files)).
 - The data is kept on the program director's computer, in My Documents by
-  default, unless another save location is chosen (8.7).
+  default, unless another save location is chosen ([8.7](#configuration)).
 - The user interface is a main form with modal dialogs designed in Visual
-  Studio (8.8). Each dialog contains the logic for its feature, alongside
+  Studio ([8.8](#user-interface-conventions)). Each dialog contains the logic for its feature, alongside
   its event handlers.
 
 ### 9.6 Partition Stored Data by Year
+
+[↑ Contents](#contents)
 
 **Status:** Accepted
 
@@ -1622,7 +1743,7 @@ extremely easy to work with.
 8, recur every year.
 
 **Decision.** Backsplice keeps each year's data in its own folder,
-`{root}\{year}`, with the week folders inside it (8.1). The year is the
+`{root}\{year}`, with the week folders inside it ([8.1](#file-system-as-the-data-store)). The year is the
 current calendar year when Backsplice starts.
 
 **Rationale.** To keep a running history of past years' rosters and
@@ -1635,11 +1756,13 @@ paperwork, instead of each year's week folders replacing the last year's.
 - Backsplice itself works only with the current year. There is no way to
   select an earlier year in the application.
 - Templates are not kept per year; every year uses the current templates
-  (8.4).
+  ([8.4](#paperwork-files)).
 - Week numbers are limited to 1–8, matching the length of the camp season
-  (8.8).
+  ([8.8](#user-interface-conventions)).
 
 ### 9.7 Fall Back When a Program Has No Template
+
+[↑ Contents](#contents)
 
 **Status:** Accepted
 
@@ -1649,11 +1772,11 @@ Some programs don't use a template at all and only need a list of the scouts
 registered.
 
 **Decision.** Backsplice has no list of programs. It takes the programs from
-the roster (8.3) and looks for a template named after each one (8.4). When a
+the roster ([8.3](#doubleknot-roster-format)) and looks for a template named after each one ([8.4](#paperwork-files)). When a
 program has no template, the NoTemplate setting decides what happens: skip
 the program, fill the blank template, or create a plain spreadsheet listing
 the scouts. When MakePaperwork is off, every program gets a plain spreadsheet
-(8.7, 6.1).
+([8.7](#configuration), [6.1](#create-paperwork)).
 
 **Rationale.** Backsplice keeps working when program offerings change,
 without needing to know which programs are and aren't offered. A program
@@ -1671,24 +1794,26 @@ gets paperwork or a list without any change to Backsplice.
   made yet get the same treatment.
 - When a program is skipped, it has no paperwork file. Find Scout still shows
   its registrations, but Drop and Add report that its paperwork does not
-  exist, after changing the roster copy (6.4, 6.5).
+  exist, after changing the roster copy ([6.4](#drop-program), [6.5](#add-program)).
 - Later features tell filled templates and plain spreadsheets apart by
-  inspecting the file (8.4).
+  inspecting the file ([8.4](#paperwork-files)).
 
 ## 10 Quality Requirements
 
+[↑ Contents](#contents)
+
 No quality requirements were defined when Backsplice was written. The goals
 below were not documented, but they drove the architecture decisions in
-section 9 and describe what the current design is built to achieve.
+section [9](#architecture-decisions) and describe what the current design is built to achieve.
 
 | Implicit goal | What it means for Backsplice | Decisions |
 | --- | --- | --- |
-| Fit the existing process | Works from the weekly Doubleknot export and produces the paperwork camp already uses | 9.1, 9.4 |
-| Usable by non-technical staff | Staff can find, open, and print files with Windows Explorer and Excel, without Backsplice | 9.2 |
-| Usable without electricity in the field | The end product is printed paperwork | 9.1 |
-| Unaffected by changes in program offerings | New or changed programs need no change to Backsplice | 9.7 |
-| Fast enough for routine use | Reading and writing files does not wait on Excel | 9.3 |
-| Keep a history | Past years' rosters and paperwork are kept | 9.6 |
+| Fit the existing process | Works from the weekly Doubleknot export and produces the paperwork camp already uses | [9.1](#use-existing-excel-paperwork-templates), [9.4](#use-the-weekly-doubleknot-export-as-input) |
+| Usable by non-technical staff | Staff can find, open, and print files with Windows Explorer and Excel, without Backsplice | [9.2](#store-data-as-files-without-a-database) |
+| Usable without electricity in the field | The end product is printed paperwork | [9.1](#use-existing-excel-paperwork-templates) |
+| Unaffected by changes in program offerings | New or changed programs need no change to Backsplice | [9.7](#fall-back-when-a-program-has-no-template) |
+| Fast enough for routine use | Reading and writing files does not wait on Excel | [9.3](#use-the-openxml-sdk-for-spreadsheet-files) |
+| Keep a history | Past years' rosters and paperwork are kept | [9.6](#partition-stored-data-by-year) |
 
 Qualities that were not goals, and that the design does not specifically
 address, include data consistency between the roster copy and paperwork,
@@ -1696,110 +1821,114 @@ error handling and recovery, and support for more than one user.
 
 ## 11 Risks and Technical Debt
 
+[↑ Contents](#contents)
+
 The items below are known problems in the current design and code. They were
 found while writing this documentation and are listed by impact, without
 proposed fixes.
 
 ### 11.1 Risks
 
+[↑ Contents](#contents)
+
 #### Loss or inconsistency of registration data
 
 The week's roster copy is the only up-to-date record of registrations once
-paperwork has been created (9.4), so these have the highest impact.
+paperwork has been created ([9.4](#use-the-weekly-doubleknot-export-as-input)), so these have the highest impact.
 
 1. **Re-creating paperwork discards drops and adds.** Running Create
    Paperwork again for a week overwrites the roster copy with the Doubleknot
-   export and regenerates the paperwork (9.4).
+   export and regenerates the paperwork ([9.4](#use-the-weekly-doubleknot-export-as-input)).
 2. **The first registration in the roster is not sorted.** The sort covers
    rows 2 onward but is told the range has a header row, so Excel treats row 2
    as a header and leaves it in place. If row 2's offering is not the first
    alphabetically, that scout forms a separate group of one. Create Paperwork
    then writes the offering's paperwork file twice under the same name, and
    the second write, with everyone else, replaces the first, so the scout is
-   missing from the paperwork (6.1). In the sample export, row 2 happens to be
+   missing from the paperwork ([6.1](#create-paperwork)). In the sample export, row 2 happens to be
    the alphabetically first offering, so it has no effect there.
 3. **Drop and Add can leave the roster copy and paperwork out of step.** Both
    change the roster copy before checking that the program's paperwork exists.
    If it doesn't, the user sees an error, but the roster copy has already
-   changed (6.4, 6.5.3).
+   changed ([6.4](#drop-program), [6.5.3](#add-scout-to-program)).
 4. **Add can update the paperwork without updating the roster copy.** The
    scout is inserted into the roster copy only before an existing row whose
    last name sorts at or after the scout's. If the scout sorts last in the
    offering, nothing is inserted, and Find and Drop/Add do not see the new
-   registration (6.5.3).
+   registration ([6.5.3](#add-scout-to-program)).
 5. **Drop can miss the scout in paperwork templates.** The search covers rows
    13–30 of the first sheet only, so a scout on row 31 or on a later sheet is
-   not removed from the paperwork (6.4.2).
+   not removed from the paperwork ([6.4.2](#delete-from-program-paperwork)).
 6. **Drop can skip a matching roster row.** After a row is removed, the rows
    below move up and the search moves on, so a matching row directly below a
-   removed one is not checked (6.4.1).
+   removed one is not checked ([6.4.1](#delete-from-doubleknot-roster)).
 7. **Add's unsorted append to a plain spreadsheet leaves a gap.** The row is
    numbered one past the end, so its row number no longer matches its
-   position, which later reads and writes depend on (6.5.5, 8.2).
+   position, which later reads and writes depend on ([6.5.5](#insert-into-excel-spreadsheet), [8.2](#spreadsheet-access)).
 
 8. **Registration data is not backed up.** The Backsplice root is kept only on
-   the program director's computer (7.1). If the computer or its disk fails,
+   the program director's computer ([7.1](#infrastructure)). If the computer or its disk fails,
    the week's roster copy, the only up-to-date record of registrations once
    paperwork has been created, is lost, along with the paperwork files and
-   past years' history (9.4, 9.6).
+   past years' history ([9.4](#use-the-weekly-doubleknot-export-as-input), [9.6](#partition-stored-data-by-year)).
 
 #### Failures that stop an operation
 
 1. **Find Scout fails when the week's roster copy is missing.** FindScout
    returns null after reporting the problem, and Find Scout then uses the
-   result without checking (6.3).
+   result without checking ([6.3](#find-scout)).
 2. **A troop number is read from the first number in the group name.** If a
     group name had no troop number, the registration ID would be read as the
     troop. If it had no number at all, the troop would be null, and Scout's
-    hash code would fail while duplicates are removed (8.3, 8.5). In the
+    hash code would fail while duplicates are removed ([8.3](#doubleknot-roster-format), [8.5](#domain-concepts-and-identity)). In the
     sample export, every group name starts with its troop number.
 3. **Provisional campers break Add.** With a troop-based sort setting, Add
     converts troops to numbers and fails on `PROVO`. Inserted rows also store
-    the troop as a number, which is invalid for `PROVO` (6.5.3, 8.3).
+    the troop as a number, which is invalid for `PROVO` ([6.5.3](#add-scout-to-program), [8.3](#doubleknot-roster-format)).
 4. **`.xls` rosters are accepted but cannot be read.** The workaround is to
-    save the export as `.xlsx` first (9.3).
+    save the export as `.xlsx` first ([9.3](#use-the-openxml-sdk-for-spreadsheet-files)).
 5. **Create Paperwork can loop indefinitely.** If a program group begins in
     the last two rows of the sorted roster, the row counter is not advanced
-    and the same group is processed repeatedly (6.1). This happens when the
+    and the same group is processed repeatedly ([6.1](#create-paperwork)). This happens when the
     alphabetically last offering has one or two registrations; in the sample
     export it has nine.
 6. **Create Paperwork can be started twice.** The Create menu item stays
     enabled while paperwork is being created, and starting a second run while
-    the first is busy fails (6.1).
+    the first is busy fails ([6.1](#create-paperwork)).
 7. **A template without a page header element cannot be classified.**
     Checking whether a file is a paperwork template fails if its first sheet
-    has no header/footer element (8.4).
+    has no header/footer element ([8.4](#paperwork-files)).
 
 #### Incorrect or incomplete results
 
  1. **Printing all programs for one period prints nothing, or the wrong
     files.** The file pattern starts with the period, which paperwork file
-    names never do, and the loop checks the wrong index (6.2).
+    names never do, and the loop checks the wrong index ([6.2](#print-paperwork)).
  2. **Add Scout's program list omits the last offering in the roster**, and
-    its counts include duplicate registrations (6.5.2).
+    its counts include duplicate registrations ([6.5.2](#load-available-programs)).
  3. **Add's sorted inserts don't match Create Paperwork's ordering.** With
     both sort settings on, and with sorting off, Add places scouts differently
-    from how Create Paperwork orders them (8.6).
+    from how Create Paperwork orders them ([8.6](#ordering)).
  4. **Scouts with the same troop can be ordered differently on each run** when
-    sorting by troop only (8.6).
+    sorting by troop only ([8.6](#ordering)).
  5. **Names containing spaces are split incorrectly** when Drop/Add reads the
-    scout's name back from its label (6.4, 6.5).
+    scout's name back from its label ([6.4](#drop-program), [6.5](#add-program)).
  6. **A plain spreadsheet saved in Excel is treated as a paperwork template**
     afterwards, because the check depends on how ExcelSpreadsheet writes files
-    (8.4).
+    ([8.4](#paperwork-files)).
  7. **A custom save location nests each time Preferences is applied
     unchanged**, because the resolved path is shown and saved back. A path
     that cannot be created is reported, but the other settings are still
-    applied and the dialog can be closed (8.7).
+    applied and the dialog can be closed ([8.7](#configuration)).
  8. **The progress bar can overrun** in Create Paperwork when a program is
-    skipped (6.1).
+    skipped ([6.1](#create-paperwork)).
  9. **Ampersands may display incorrectly in page headers.** Program names and
     periods such as "Fish & Wildlife Management" and "Periods 1 & 2" are
     written into page headers, where `&` starts an Excel formatting code. The
-    code that would escape it is commented out (8.4). Not confirmed by
+    code that would escape it is commented out ([8.4](#paperwork-files)). Not confirmed by
     printing.
 10. **Print's period list cuts periods at the first full stop**, so
-    "Wed. Evening" is listed as "Wed" (6.2).
+    "Wed. Evening" is listed as "Wed" ([6.2](#print-paperwork)).
 11. **The wrong records may be skipped** in Create Paperwork if the Doubleknot
     export changes in a way where `Summer Camp Week` no longer matches.
 
@@ -1807,34 +1936,38 @@ paperwork has been created (9.4), so these have the highest impact.
 
  1. **A failed sort or print may leave Excel running.** The COM objects are
     released only when sorting or printing succeeds, so a failure partway may
-    leave the Excel process open (11.2, item 5).
+    leave the Excel process open ([11.2](#technical-debt), item 5).
  2. **There is no error log.** A path is defined, but nothing writes to it,
-    and unexpected errors go to the default Windows Forms handler (8.10).
+    and unexpected errors go to the default Windows Forms handler ([8.10](#error-handling)).
 
 ### 11.2 Technical Debt
 
-1. **No automated tests.** The UnitTests project contains a single test method
-   with no code, only comments listing what it should check, and the release
-   workflow's test step is commented out (7.3). Backsplice is checked by
-   using it. The problems in 11.1 were found by
-   reading the code, not by tests, and some (such as 11.1 items 2, 13, and 26)
-   have not been confirmed by running it. The current structure also makes
-   tests hard to add: feature logic lives in the forms (item 4), the wrapper
-   classes open real files in their constructors (8.2), sorting and printing
-   need Excel (item 5), and settings are read from static properties
-   (item 7).
+[↑ Contents](#contents)
+
+1. **Few automated tests.** The Backsplice.Tests project (ADR 0001) has a
+   single test, which checks that the roster builder's workbooks can be read
+   by DoubleKnotRoster. No other behavior is covered yet, and the release
+   workflow does not run the tests ([7.3](#build-and-release)). Backsplice
+   is still mainly checked by using it. The problems in [11.1](#risks) were
+   found by reading the code, not by tests, and some (such as
+   [11.1](#risks) items 2, 13, and 26) have not been confirmed by running
+   it. The current structure also makes tests hard to add: feature logic
+   lives in the forms (item 4), the wrapper classes ProgramPaperwork and
+   ExcelSpreadsheet open real files in their constructors
+   ([8.2](#spreadsheet-access)), sorting and printing need Excel (item 5),
+   and settings are read from static properties (item 7).
 2. **Roster format knowledge is spread across its callers.** Four features
    read the roster with their own row-number loops and their own
    "Summer Camp Week" filter. Grouping by offering is implemented twice, with
    different boundary conditions. The sort in Create Paperwork hard-codes
-   column D separately from DoubleKnotRoster (8.2, 8.3).
+   column D separately from DoubleKnotRoster ([8.2](#spreadsheet-access), [8.3](#doubleknot-roster-format)).
 3. **The wrapper classes expose rows and cells, not registrations.** Callers
    work with row numbers, header offsets, sheet sizes, and sheet selection
-   (8.2).
+   ([8.2](#spreadsheet-access)).
 4. **Feature logic lives in the forms.** Each dialog contains its feature's
    file handling and business rules, and the scout search is a static method
-   on the main form that also shows message boxes (8.8, 9.5).
-5. **Remaining dependency on Excel.** The move to the OpenXML SDK (9.3) left
+   on the main form that also shows message boxes ([8.8](#user-interface-conventions), [9.5](#build-a-single-user-windows-desktop-application)).
+5. **Remaining dependency on Excel.** The move to the OpenXML SDK ([9.3](#use-the-openxml-sdk-for-spreadsheet-files)) left
    two operations on Excel COM Interop: sorting the roster copy in Create
    Paperwork and printing. Backsplice therefore still needs Excel installed
    and licensed on the program director's computer, automates a separate
@@ -1845,8 +1978,8 @@ paperwork has been created (9.4), so these have the highest impact.
    dialog, six near-identical insert loops in Add, and the page header parsing
    in ProgramPaperwork.
 7. **Settings are read through different routes and at different times**
-   (8.7). ScoutList reads the main form's static settings to decide its own
-   order (8.6).
+   ([8.7](#configuration)). ScoutList reads the main form's static settings to decide its own
+   order ([8.6](#ordering)).
 8. **Unused code.** Two source files are no longer used: ScoutSorter.cs and
    Roster.cs. The backsplicelib project holds an unfinished extraction of
    ProgramPaperwork and a Spreadsheet class built on Roster; it depends on the
@@ -1864,12 +1997,12 @@ paperwork has been created (9.4), so these have the highest impact.
    CampProgram cast in Equals without checking the type. Scout holds the name
    as one string, while Drop and Add work with first and last names.
 10. **A data class depends on Windows Forms.** ExcelSpreadsheet measures text
-    with TextRenderer to size its columns (8.4).
+    with TextRenderer to size its columns ([8.4](#paperwork-files)).
 11. **Naming.** The code uses `DoubleKnot` where the product is Doubleknot,
     and CampProgram represents a registration rather than a program.
 12. **Build and release.** The installer does not check
     for the .NET Framework 4.8 or Excel, so a missing prerequisite shows up
-    only when Backsplice runs (7.2). In `app.config`, the default settings
+    only when Backsplice runs ([7.2](#installation)). In `app.config`, the default settings
     are declared under the name `Backsplicelib.Properties.Settings` rather
     than `Backsplice.Properties.Settings`; the defaults Backsplice uses come
     from the compiled settings class, which has the same values.
@@ -1877,25 +2010,27 @@ paperwork has been created (9.4), so these have the highest impact.
 
 ## 12 Glossary
 
+[↑ Contents](#contents)
+
 | Term | Meaning |
 | --- | --- |
-| Backsplice root | The folder that holds all Backsplice data and the default templates: `My Documents\Backsplice` or a chosen location (8.1). |
-| Blank template | `Default Blank.xlsx`, the template used for a program without its own template when NoTemplate is 2 (9.7). |
+| Backsplice root | The folder that holds all Backsplice data and the default templates: `My Documents\Backsplice` or a chosen location ([8.1](#file-system-as-the-data-store)). |
+| Blank template | `Default Blank.xlsx`, the template used for a program without its own template when NoTemplate is 2 ([9.7](#fall-back-when-a-program-has-no-template)). |
 | Doubleknot | The external registration system camp uses. The code refers to it as `DoubleKnot`. |
-| Doubleknot export | The Excel workbook of a week's registrations that the program director exports from Doubleknot. Backsplice's only input (8.3, 9.4). |
-| Drop / Add | Removing a scout from, or adding a scout to, a program offering after paperwork has been created (6.4, 6.5). |
-| MB | Merit Badge. Appears after a merit badge program's name in the roster's description column (8.3). |
-| Paperwork | The file Backsplice produces for a program offering, printed and filled in by hand by staff (8.4). |
-| Paperwork template | A user-maintained Excel workbook for one program, named after the program, which Backsplice fills with registered scouts (8.4, 9.1). |
-| Period | A time slot in the camp day in which a program offering meets: a numbered period, combined periods such as "Periods 1 & 2" or "all periods", or a named time such as "Thursday Dinner" (8.3). |
-| Plain spreadsheet | An Excel Workbook file listing names and troops, created by Backsplice without a template (8.4, 9.7). |
-| Program | An activity camp offers: a merit badge or another activity or event. Programs change from year to year (9.7). |
-| Program director | The camp staff member who exports the roster and uses Backsplice. Its only user (9.5). |
+| Doubleknot export | The Excel workbook of a week's registrations that the program director exports from Doubleknot. Backsplice's only input ([8.3](#doubleknot-roster-format), [9.4](#use-the-weekly-doubleknot-export-as-input)). |
+| Drop / Add | Removing a scout from, or adding a scout to, a program offering after paperwork has been created ([6.4](#drop-program), [6.5](#add-program)). |
+| MB | Merit Badge. Appears after a merit badge program's name in the roster's description column ([8.3](#doubleknot-roster-format)). |
+| Paperwork | The file Backsplice produces for a program offering, printed and filled in by hand by staff ([8.4](#paperwork-files)). |
+| Paperwork template | A user-maintained Excel workbook for one program, named after the program, which Backsplice fills with registered scouts ([8.4](#paperwork-files), [9.1](#use-existing-excel-paperwork-templates)). |
+| Period | A time slot in the camp day in which a program offering meets: a numbered period, combined periods such as "Periods 1 & 2" or "all periods", or a named time such as "Thursday Dinner" ([8.3](#doubleknot-roster-format)). |
+| Plain spreadsheet | An Excel Workbook file listing names and troops, created by Backsplice without a template ([8.4](#paperwork-files), [9.7](#fall-back-when-a-program-has-no-template)). |
+| Program | An activity camp offers: a merit badge or another activity or event. Programs change from year to year ([9.7](#fall-back-when-a-program-has-no-template)). |
+| Program director | The camp staff member who exports the roster and uses Backsplice. Its only user ([9.5](#build-a-single-user-windows-desktop-application)). |
 | Program offering | A program at a particular period. The unit Backsplice creates paperwork for. |
-| Provisional camper | A scout attending camp without their troop. The roster lists their troop with a "Provisional Camper" note; Backsplice records their troop as `PROVO` (8.3). |
+| Provisional camper | A scout attending camp without their troop. The roster lists their troop with a "Provisional Camper" note; Backsplice records their troop as `PROVO` ([8.3](#doubleknot-roster-format)). |
 | Registration | One scout signed up for one program offering. One row of the roster. |
-| Roster copy | The copy of the Doubleknot export kept in the week's folder. After paperwork is created, the only up-to-date record of registrations (9.4). |
-| Save directory | The folder for the current year's data, `{root}\{year}` (8.1). |
-| Summer Camp Week registration | A roster row recording a person's registration for the camp week itself rather than a program. Skipped by every feature (8.3). |
+| Roster copy | The copy of the Doubleknot export kept in the week's folder. After paperwork is created, the only up-to-date record of registrations ([9.4](#use-the-weekly-doubleknot-export-as-input)). |
+| Save directory | The folder for the current year's data, `{root}\{year}` ([8.1](#file-system-as-the-data-store)). |
+| Summer Camp Week registration | A roster row recording a person's registration for the camp week itself rather than a program. Skipped by every feature ([8.3](#doubleknot-roster-format)). |
 | Troop | The scout's home unit, identified by number, or `PROVO` for provisional campers. |
-| Week | One of the 8 weeks of the camp season, numbered 1 to 8 (9.6). |
+| Week | One of the 8 weeks of the camp season, numbered 1 to 8 ([9.6](#partition-stored-data-by-year)). |
