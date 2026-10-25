@@ -139,9 +139,11 @@
     <Compile Include="ExcelSpreadsheet.cs" />
     <Compile Include="CreatePaperwork.cs">
       <SubType>Form</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
     <Compile Include="CreatePaperwork.Designer.cs">
       <DependentUpon>CreatePaperwork.cs</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
     <Compile Include="DoubleKnotRoster.cs" />
     <Compile Include="DropAdd.cs">
@@ -183,6 +185,7 @@
     <EmbeddedResource Include="CreatePaperwork.resx">
       <DependentUpon>CreatePaperwork.cs</DependentUpon>
       <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="DropAdd.resx">
       <DependentUpon>DropAdd.cs</DependentUpon>
