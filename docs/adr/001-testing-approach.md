@@ -60,7 +60,7 @@ The repository is public, and real Doubleknot exports contain scouts' names.
   duplicate registrations, and edge cases such as names containing spaces
   or apostrophes.
 - Paperwork templates are stored as files in
-  `src/Backsplice.Tests/Fixtures/Templates`, copied to the test output
+  `src/Backsplice.Tests/TestData/Templates`, copied to the test output
   folder at build time: a copy of the repository's `Default Blank.xlsx`, plus
   any synthetic templates made for tests.
 - All test data is synthetic. No real export, roster copy, or paperwork is
