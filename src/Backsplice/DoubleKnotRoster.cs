@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
@@ -26,6 +27,20 @@ namespace Backsplice
         private WorksheetPart m_wpWorksheet;
         private SheetData m_sdSheetData;
         private SharedStringTable m_sstSharedStringTable;
+
+        /// <summary>
+        /// Opens a Doubleknot roster from a stream. The roster does not close the stream; dispose the roster before disposing the stream, so that any changes are saved.
+        /// </summary>
+        /// <param name="stream">a Doubleknot export in .xlsx format. The stream must be readable, seekable, and writable if isReadOnly is false.</param>
+        /// <param name="isReadOnly">true to open the roster read-only. Changes are saved to the stream on Dispose() only when false.</param>
+        public DoubleKnotRoster(Stream stream, bool isReadOnly)
+        {
+            m_blnIsEditable = !isReadOnly;
+            m_ssdDoubleKnotRoster = SpreadsheetDocument.Open(stream, m_blnIsEditable);            
+            m_wpWorksheet = m_ssdDoubleKnotRoster.WorkbookPart.WorksheetParts.First();
+            m_sdSheetData = m_wpWorksheet.Worksheet.Elements<SheetData>().First();
+            m_sstSharedStringTable = m_ssdDoubleKnotRoster.WorkbookPart.SharedStringTablePart.SharedStringTable;
+        }
 
         /// <summary>
         /// Constructs a DoubleKnotRoster
