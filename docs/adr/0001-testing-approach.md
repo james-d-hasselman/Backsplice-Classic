@@ -6,7 +6,7 @@
 
 **Implemented:** 2026-10-25
 
-**Addresses:** Baseline 11.2 item 1 (no automated tests). Prepares for the
+**Addresses:** TD1 (no automated tests). Prepares for the
 redesign ADRs that follow, which rely on these tests.
 
 ## Contents
@@ -20,7 +20,9 @@ redesign ADRs that follow, which rely on these tests.
 
 ## Context
 
-Backsplice has no working tests (baseline 11.2 item 1). The UnitTests project
+[↑ Contents](#contents)
+
+Backsplice has no working tests (TD1). The UnitTests project
 contains one empty test method and references the Visual Studio 2010 test
 framework (`Microsoft.VisualStudio.QualityTools.UnitTestFramework`), which
 does not run with current tooling.
@@ -33,16 +35,18 @@ Several things make Backsplice hard to test today:
 
 - The wrapper classes (DoubleKnotRoster, ProgramPaperwork, ExcelSpreadsheet)
   open files by path, so every test needs a real `.xlsx` file (baseline 8.2).
-- Feature logic lives in form event handlers (baseline 11.2 item 4).
-- Sorting and printing need Excel (baseline 11.2 item 5), which the developer
+- Feature logic lives in form event handlers (TD4).
+- Sorting and printing need Excel (TD5), which the developer
   no longer has.
-- Settings are read from static properties (baseline 11.2 item 7).
+- Settings are read from static properties (TD7).
 - The wrapper and domain classes are `internal`, so another assembly cannot
   use them without changes.
 
 The repository is public, and real Doubleknot exports contain scouts' names.
 
 ## Decision
+
+[↑ Contents](#contents)
 
 **Framework and project.**
 
@@ -109,9 +113,11 @@ behavior changes:
 behavior and before each release. CI is not otherwise changed for now, but
 the unused ".NET Core Desktop" workflow (`.github/workflows/dotnet-desktop.yml`)
 is removed. It was an unadapted GitHub starter template that built a
-packaging project that does not exist (baseline 7.3, 11.2 item 12).
+packaging project that does not exist (baseline 7.3, TD12).
 
 ## Considered Options
+
+[↑ Contents](#contents)
 
 - **Framework:** MSTest v2, xUnit, and NUnit were considered. All three
   support .NET Framework 4.8 and modern .NET, so any of them would carry over
@@ -137,6 +143,8 @@ packaging project that does not exist (baseline 7.3, 11.2 item 12).
 
 ## Consequences
 
+[↑ Contents](#contents)
+
 - Tests can be written for the roster, paperwork, and domain classes without
   Excel and without real data.
 - Feature logic still cannot be tested until it is moved out of the forms;
@@ -153,6 +161,8 @@ packaging project that does not exist (baseline 7.3, 11.2 item 12).
 
 ## Done When
 
+[↑ Contents](#contents)
+
 - `src/Backsplice.Tests` exists as an SDK-style project targeting .NET
   Framework 4.8, using xUnit v3 and Bogus, and the old UnitTests project is
   removed from the solution.
@@ -168,10 +178,12 @@ packaging project that does not exist (baseline 7.3, 11.2 item 12).
 
 ## Documentation Updates
 
+[↑ Contents](#contents)
+
 When accepted and implemented, update the architecture document:
 
 - Section 7.3 (Build and Release): the test project and how tests are run;
   remove the paragraph about the ".NET Core Desktop" workflow.
-- Section 11.2 item 1: remove or reword.
-- Section 11.2 item 12: remove the part about the ".NET Core Desktop"
+- TD1 (section 11.2): remove or reword.
+- TD12 (section 11.2): remove the part about the ".NET Core Desktop"
   workflow.
