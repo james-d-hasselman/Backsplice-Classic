@@ -37,6 +37,7 @@
   - [9.5 Build a Single-User Windows Desktop Application](#build-a-single-user-windows-desktop-application)
   - [9.6 Partition Stored Data by Year](#partition-stored-data-by-year)
   - [9.7 Fall Back When a Program Has No Template](#fall-back-when-a-program-has-no-template)
+  - [9.8 Later Decisions](#later-decisions)
 - [10 Quality Requirements](#quality-requirements)
 - [11 Risks and Technical Debt](#risks-and-technical-debt)
   - [11.1 Risks](#risks)
@@ -1797,6 +1798,18 @@ gets paperwork or a list without any change to Backsplice.
   exist, after changing the roster copy ([6.4](#drop-program), [6.5](#add-program)).
 - Later features tell filled templates and plain spreadsheets apart by
   inspecting the file ([8.4](#paperwork-files)).
+
+### 9.8 Later Decisions
+
+[↑ Contents](#contents)
+
+Decisions made after this document was first written are recorded as
+separate ADRs:
+
+| ADR | Decision | Status |
+| --- | --- | --- |
+| [0001](adr/0001-testing-approach.md) | Testing Approach | Accepted, implemented 2026-10-25 |
+| [0002](adr/0002-use-the-openxml-sdk-to-sort-doubleknot-rosters.md) | Use the OpenXML SDK to Sort Doubleknot Rosters | Proposed |
 
 ## 10 Quality Requirements
 
