@@ -6,7 +6,7 @@
 
 **Implemented:** 2026-10-25
 
-**Addresses:** TD1 (no automated tests). Prepares for the
+**Addresses:** [TD1](../architecture.md#112-technical-debt) (no automated tests). Prepares for the
 redesign ADRs that follow, which rely on these tests.
 
 ## Contents
@@ -22,23 +22,23 @@ redesign ADRs that follow, which rely on these tests.
 
 [↑ Contents](#contents)
 
-Backsplice has no working tests (TD1). The UnitTests project
+Backsplice has no working tests ([TD1](../architecture.md#112-technical-debt)). The UnitTests project
 contains one empty test method and references the Visual Studio 2010 test
 framework (`Microsoft.VisualStudio.QualityTools.UnitTestFramework`), which
 does not run with current tooling.
 
 The redesign will change code that has no tests, so tests are needed first:
-to confirm the problems listed in baseline section 11, to pin down existing
+to confirm the problems listed in baseline section [11](../architecture.md#11-risks-and-technical-debt), to pin down existing
 behavior that must not change, and to specify new interfaces.
 
 Several things make Backsplice hard to test today:
 
 - The wrapper classes (DoubleKnotRoster, ProgramPaperwork, ExcelSpreadsheet)
-  open files by path, so every test needs a real `.xlsx` file (baseline 8.2).
-- Feature logic lives in form event handlers (TD4).
-- Sorting and printing need Excel (TD5), which the developer
+  open files by path, so every test needs a real `.xlsx` file (baseline [8.2](../architecture.md#82-spreadsheet-access)).
+- Feature logic lives in form event handlers ([TD4](../architecture.md#112-technical-debt)).
+- Sorting and printing need Excel ([TD5](../architecture.md#112-technical-debt)), which the developer
   no longer has.
-- Settings are read from static properties (TD7).
+- Settings are read from static properties ([TD7](../architecture.md#112-technical-debt)).
 - The wrapper and domain classes are `internal`, so another assembly cannot
   use them without changes.
 
@@ -66,7 +66,7 @@ The repository is public, and real Doubleknot exports contain scouts' names.
 **Test data.**
 
 - Roster workbooks are built in code by a test helper, using the OpenXML SDK,
-  with the same six columns and layout as a Doubleknot export (baseline 8.3).
+  with the same six columns and layout as a Doubleknot export (baseline [8.3](../architecture.md#83-doubleknot-roster-format)).
   Each test builds only the rows it needs.
 - Names, troop numbers, and similar values that a test does not care about
   are generated with Bogus (the `Bogus` NuGet package). Each generator is
@@ -113,7 +113,7 @@ behavior changes:
 behavior and before each release. CI is not otherwise changed for now, but
 the unused ".NET Core Desktop" workflow (`.github/workflows/dotnet-desktop.yml`)
 is removed. It was an unadapted GitHub starter template that built a
-packaging project that does not exist (baseline 7.3, TD12).
+packaging project that does not exist (baseline [7.3](../architecture.md#73-build-and-release), [TD12](../architecture.md#112-technical-debt)).
 
 ## Considered Options
 
@@ -135,7 +135,7 @@ packaging project that does not exist (baseline 7.3, TD12).
 - **Real data:** checking the new sorter against past years' Excel-sorted
   roster copies. Rejected: the sort only needs to group rows of the same
   offering, keep their order, and ignore case, which synthetic tests can
-  specify fully. The formats in real exports are documented in baseline 8.3
+  specify fully. The formats in real exports are documented in baseline [8.3](../architecture.md#83-doubleknot-roster-format)
   and reproduced in synthetic data.
 - **CI:** running tests on every push and before each release. Deferred,
   because the application is small, has a single developer, and is updated
@@ -184,6 +184,6 @@ When accepted and implemented, update the architecture document:
 
 - Section 7.3 (Build and Release): the test project and how tests are run;
   remove the paragraph about the ".NET Core Desktop" workflow.
-- TD1 (section 11.2): remove or reword.
-- TD12 (section 11.2): remove the part about the ".NET Core Desktop"
+- [TD1](../architecture.md#112-technical-debt) (section 11.2): remove or reword.
+- [TD12](../architecture.md#112-technical-debt) (section 11.2): remove the part about the ".NET Core Desktop"
   workflow.
