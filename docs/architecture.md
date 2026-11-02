@@ -1809,7 +1809,7 @@ separate ADRs:
 | ADR | Decision | Status |
 | --- | --- | --- |
 | [0001](adr/0001-testing-approach.md) | Testing Approach | Accepted, implemented 2026-10-25 |
-| [0002](adr/0002-roster-sorting.md) | Use the OpenXML SDK to Sort Doubleknot Rosters | Proposed |
+| [0002](adr/0002-roster-sorting.md) | Use the OpenXML SDK to Sort Doubleknot Rosters | Accepted |
 
 ## 10 Quality Requirements
 

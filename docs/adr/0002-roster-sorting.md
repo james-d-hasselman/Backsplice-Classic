@@ -1,6 +1,6 @@
 # 0002. Use the OpenXML SDK to Sort Doubleknot Rosters
 
-**Status:** Proposed
+**Status:** Accepted
 
 **Date:** 2026-10-27
 
@@ -25,7 +25,7 @@ the form), and [TD5](../architecture.md#112-technical-debt) (sorting no longer n
 
 Backsplice sorts the week's Doubleknot roster copy using Excel via COM Interop. The sorting logic lives in the SortRoster method of the CreatePaperwork form. The rows in the roster are sorted in ascending order by the value in column D (description), case insensitive. Sorting incorrectly treats row 2 of the roster as a header row and leaves it in place. If the offering in row 2 is not the first alphabetically then the paperwork for that offering will be missing a scout ([R2](../architecture.md#111-risks)).
 
-The main feature of Backsplice is Create Paperwork (baseline [6.1](../architecture.md#61-create-paperwork)). Create Paperwork requires a sorted Doubleknot roster and sorting requires Excel which the developer no longer has. Create Paperwork cannot run at all without Excel. The inability to test Create Paperwork makes it difficult to make any architectural changes since there is no way to verify that Create Paperwork continues to function correctly. Future releases of Backsplice are blocked until Excel is no longer needed for sorting or printing.
+The main feature of Backsplice is Create Paperwork (baseline [6.1](../architecture.md#61-create-paperwork)). Create Paperwork requires a sorted Doubleknot roster and sorting requires Excel. Create Paperwork cannot run at all without Excel. The inability to test Create Paperwork automatically makes it difficult to make any architectural changes since testing must be done manually.
 
 A replacement sorting implementation must achieve the following:
 
@@ -63,7 +63,7 @@ To sort a roster using the new implementation, Create Paperwork opens the roster
 
 * **Separate roster sorter**: Introduce a new class responsible for sorting rosters. This option was not chosen because it simply moves [TD2](../architecture.md#112-technical-debt) to a new class instead of addressing the problem. Without changes to DoubleKnotRoster’s interface, the sorter would have to read and write rows itself, making it a fifth piece of code with its own knowledge of the roster’s layout.
 * **Registration based interface**: Convert the DoubleKnotRoster class to have an interface that operates on registrations instead of rows and columns. This interface would have an enumerator that returns Registration objects, an Add(Registration) method, and a Remove(Registration) method. Sorting would either be done internally by the enumerator (the enumerator would return the registrations in sorted order, which would also remove the need to save the sorted roster), or by the RosterSorter class. Adding a RosterSorter doesn't have the same problems in this case because the Registration based interface allows it to operate without any knowledge of the roster format. This solution wasn't chosen because changing DoubleKnotRoster's interface in this way would cause changes in nearly every other feature and not only sorting. A registration based interface is desirable eventually and that work will be left to a later ADR.
-* **Excel sort behind an interface**: Introduce an interface that hides the dependency on Excel by allowing a test fake to be introduced. This option would have enabled testing Create Paperwork with the exception of sorting. This solution wasn't selected because the application still isn't runnable without Excel and [R2](../architecture.md#111-risks) remains unfixed.
+* **Excel sort behind an interface**: Introduce an interface that hides the dependency on Excel by allowing a test fake to be introduced. This option would have enabled testing Create Paperwork with the exception of sorting. This solution wasn't selected because it leaves sorting untestable without Excel and [R2](../architecture.md#111-risks) remains unfixed.
 * **Order by program and period**: Sort registrations first alphabetically by program name and secondly by offering period. This is the ideal ordering. Sorting case insensitively by description is naive and only coincidentally sorts periods in chronological order. Doing this properly means using the same period rule as Find ("all" periods first, then numbered periods in ascending order, then everything else), and breaking ties between different offerings that the rule treats as the same period, such as "period 1" and "Periods 1 & 2". This wasn't selected because the scope of this ADR is to remove sorting from Excel, not to change how sorting works.
 
 ## Consequences
@@ -80,7 +80,6 @@ To sort a roster using the new implementation, Create Paperwork opens the roster
 * Most of Backsplice is still uncovered by tests ([TD1](../architecture.md#112-technical-debt))
 * Printing still requires Excel ([TD5](../architecture.md#112-technical-debt))
 * The ordering of registrations in the sorted roster remains unchanged
-* Releases are blocked until printing no longer requires Excel
 * Create Paperwork opens the roster twice, once in write mode to sort it, and then again in read mode to create paperwork
 * Backsplice assumes responsibility for rewriting and renumbering the rows during sorting, a responsibility that used to belong to Excel
 
