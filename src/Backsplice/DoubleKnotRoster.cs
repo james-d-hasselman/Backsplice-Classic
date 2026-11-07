@@ -1,8 +1,9 @@
-﻿using System;
-using System.IO;
-using System.Linq;
+﻿using DocumentFormat.OpenXml.Drawing.Charts;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
+using System;
+using System.IO;
+using System.Linq;
 
 namespace Backsplice
 {
@@ -447,6 +448,40 @@ namespace Backsplice
             string strSharedString = m_sstSharedStringTable.ElementAt(int.Parse(cvValue.Text)).InnerText.Trim();
 
             return strSharedString;
+        }
+
+        /// <summary>
+        /// Sorts the registrations in alphabetical order by description, case insensitive.
+        /// Registrations with the same description maintain their original order relative to one another (stable sort).
+        /// </summary>
+        public void Sort()
+        {
+            var rows = m_sdSheetData.Elements<Row>().ToList();
+            Row header = rows[0];
+
+            var sortedRows = rows
+                .Skip(1)
+                .OrderBy(row => LookupSharedString((int)row.RowIndex.Value - 1, DescriptionColumn), StringComparer.OrdinalIgnoreCase)
+                .ToList();
+
+            m_sdSheetData.RemoveAllChildren<Row>();
+            m_sdSheetData.Append(header);
+            m_sdSheetData.Append(sortedRows);
+
+            uint rowIndex = 2;
+            foreach (Row row in m_sdSheetData.Elements<Row>().Skip(1))
+            {
+                row.RowIndex = rowIndex;
+
+                foreach (Cell cell in row.Elements<Cell>())
+                {
+                    string column = new string(
+                        cell.CellReference.Value.TakeWhile(char.IsLetter).ToArray());
+                    cell.CellReference = column + rowIndex;
+                }
+
+                rowIndex++;
+            }
         }
 
         /// <summary>

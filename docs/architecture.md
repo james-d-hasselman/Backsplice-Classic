@@ -82,7 +82,7 @@ C4Context
   System(Excel, "MicrosoftExcel", "Proprietary spreadsheet program")
 
   Rel(ProgramDirector, Backsplice, "Uses")
-  Rel(Backsplice, Excel, "Print out paperwork and sort rosters")
+  Rel(Backsplice, Excel, "Print out paperwork")
 ```
 
 ## 4. Solution Strategy
@@ -164,7 +164,6 @@ classDiagram
   CreatePaperwork ..> Scout
   CreatePaperwork ..> ProgramPaperwork
   CreatePaperwork ..> ExcelSpreadsheet
-  CreatePaperwork ..> MicrosoftExcel : Sort
   PrintPaperwork ..> MicrosoftExcel : Print
   FindScout ..> BackspliceMain : FindScout()
   FindScout ..> DropAdd
@@ -204,8 +203,8 @@ classDiagram
   settings ([8.6](#86-ordering)).
 - **Settings** is the .NET application settings class, read mostly through
   BackspliceMain and changed in Preferences ([8.7](#87-configuration)).
-- **Microsoft Excel** is used through COM Interop to sort the roster copy and
-  to print paperwork ([8.2](#82-spreadsheet-access), [9.3](#93-use-the-openxml-sdk-for-spreadsheet-files)).
+- **Microsoft Excel** is used through COM Interop to print paperwork ([8.2](#82-spreadsheet-access), 
+  [9.3](#93-use-the-openxml-sdk-for-spreadsheet-files)).
 
 ## 6. Runtime View
 
@@ -238,9 +237,12 @@ sequenceDiagram
   participant CreatePaperwork as :CreatePaperwork<br/>(bgwCreate_DoWork)
   participant ProgressBar
   activate CreatePaperwork
-  Note over CreatePaperwork: Copy roster to Week N folder<br/>SortRoster(path): Excel sorts A2:F by column D,<br/>treating row 2 as a header
-
+  Note over CreatePaperwork: Copy roster to Week N folder<br/>
+  
   create participant DoubleKnotRoster as :DoubleKnotRoster
+  CreatePaperwork->>DoubleKnotRoster: new(rosterCopyPath, false)
+  CreatePaperwork->>DoubleKnotRoster: Sort()
+  CreatePaperwork->>DoubleKnotRoster: Dispose()
   CreatePaperwork->>DoubleKnotRoster: new(rosterCopyPath, true)
   CreatePaperwork->>DoubleKnotRoster: Rows
   DoubleKnotRoster-->>CreatePaperwork: rowCount
@@ -1195,7 +1197,7 @@ flowchart LR
   Export -- "selected in Create Paperwork<br/>and copied (6.1)" --> App
   App --> SDK
   SDK -- "reads and writes" --> Data
-  App -- "COM Interop: sort, print" --> Excel
+  App -- "COM Interop: print" --> Excel
   Excel --> Data
   Excel -- "prints paperwork" --> Printer
   App --> Settings
@@ -1206,7 +1208,7 @@ flowchart LR
 | Program director's computer | Windows computer in the program director's office, with the .NET Framework 4.8. The only computer Backsplice runs on. |
 | Backsplice.exe | The Windows Forms application, targeting the .NET Framework 4.8, installed per user ([7.2](#72-installation)). |
 | DocumentFormat.OpenXml.dll | The OpenXML SDK, version 2.16.0, installed alongside Backsplice.exe. Used to read and write `.xlsx` files ([8.2](#82-spreadsheet-access)). |
-| Microsoft Excel | Must be installed on the same computer. Used through COM Interop to sort the roster copy and to print ([8.2](#82-spreadsheet-access), [9.3](#93-use-the-openxml-sdk-for-spreadsheet-files)). The Interop types (Office 2013, version 15) are embedded in Backsplice.exe, so no Interop assembly is installed. |
+| Microsoft Excel | Must be installed on the same computer. Used through COM Interop to print ([8.2](#82-spreadsheet-access), [9.3](#93-use-the-openxml-sdk-for-spreadsheet-files)). The Interop types (Office 2013, version 15) are embedded in Backsplice.exe, so no Interop assembly is installed. |
 | Backsplice root | `My Documents\Backsplice` by default, or a location chosen in Preferences ([8.1](#81-file-system-as-the-data-store)). Holds the default template directory and each year's rosters and paperwork. It is not backed up. |
 | Application settings | .NET user settings, saved in a `user.config` file in the user's local application data folder ([8.7](#87-configuration)). |
 | Weekly export | The Doubleknot export, saved on the computer by the program director and selected in Create Paperwork. Backsplice copies it into the week's folder ([9.4](#94-use-the-weekly-doubleknot-export-as-input)). |
@@ -1263,7 +1265,7 @@ commented out, so tests are not run as part of a release.
 [↑ Contents](#contents)
 
 - Windows with the .NET Framework 4.8.
-- Microsoft Excel, for Create Paperwork (sorting) and Print Paperwork.
+- Microsoft Excel, for Print Paperwork.
 - A paperwork template for each program that should get its own paperwork,
   in the template directory, plus `Default Blank.xlsx` if NoTemplate is set to
   2 ([8.4](#84-paperwork-files), [9.7](#97-fall-back-when-a-program-has-no-template)).
@@ -1333,11 +1335,10 @@ Backsplice uses two technologies to work with spreadsheets.
   ProgramPaperwork, and ExcelSpreadsheet, read and write `.xlsx` files
   directly, using the DocumentFormat.OpenXml package, currently version 2.16.0
   ([7.1](#71-infrastructure)). Excel is not required for these operations.
-- **Excel COM Interop.** Used only to sort the roster copy before paperwork is
-  created (CreatePaperwork.SortRoster) and to print paperwork
-  (PrintPaperwork.PrintExcelFile). Both create an Excel application instance,
-  turn off alerts, open the workbook, act on it, close it without further
-  changes, and release the COM objects.
+- **Excel COM Interop.** Used only to print paperwork
+  (PrintPaperwork.PrintExcelFile). Creates an Excel application instance,
+  turns off alerts, opens the workbook, acts on it, closes it without further
+  changes, and releases the COM objects.
 
 **Wrapper classes.**
 
@@ -1462,7 +1463,7 @@ written by ExcelSpreadsheet have none of these.
 
 | Where | What is ordered | Rule |
 | --- | --- | --- |
-| Create Paperwork ([6.1](#61-create-paperwork)) | Roster copy | Sorted by column D (description), ascending, using Excel, before rows are grouped by program and period. Row 2 is treated as a header and keeps its place ([R2](#111-risks)) |
+| Create Paperwork ([6.1](#61-create-paperwork)) | Roster copy | Sorted by column D (description), ascending, before rows are grouped by program and period. |
 | Create Paperwork ([6.1](#61-create-paperwork)) | Scouts in an offering | When SortScouts is on, ScoutList.Sort orders them by the sort settings (below) |
 | Find Scout ([6.3.1](#631-search-roster-for-scout)) | A scout's registrations | "All" periods first, then numbered periods ascending, then everything else, in roster order within each group |
 | Add ([6.5.3](#653-add-scout-to-program)) | Roster copy | Inserted before the first row of the same offering whose last name sorts at or after the scout's |
@@ -1633,7 +1634,7 @@ non-technical users to use, despite its advantages for searching and Drop/Add.
 
 [↑ Contents](#contents)
 
-**Status:** Accepted, November 2010
+**Status:** Accepted, November 2010; partly superseded by ADR 0002 (sorting)
 
 **Context.** Backsplice originally used Excel COM Interop for all spreadsheet
 work: reading the Doubleknot roster, reading and writing paperwork, sorting
@@ -1727,7 +1728,7 @@ extremely easy to work with.
 
 - There is no concurrent use to handle, so files are not locked ([8.1](#81-file-system-as-the-data-store)).
 - Backsplice runs only on Windows with the .NET Framework 4.8, and needs
-  Excel for sorting and printing ([7.4](#74-requirements-on-the-computer), [9.3](#93-use-the-openxml-sdk-for-spreadsheet-files)).
+  Excel for printing ([7.4](#74-requirements-on-the-computer), [9.3](#93-use-the-openxml-sdk-for-spreadsheet-files)).
 - The data is kept on the program director's computer, in My Documents by
   default, unless another save location is chosen ([8.7](#87-configuration)).
 - The user interface is a main form with modal dialogs designed in Visual
@@ -1809,7 +1810,7 @@ separate ADRs:
 | ADR | Decision | Status |
 | --- | --- | --- |
 | [0001](adr/0001-testing-approach.md) | Testing Approach | Accepted, implemented 2026-10-25 |
-| [0002](adr/0002-roster-sorting.md) | Use the OpenXML SDK to Sort Doubleknot Rosters | Accepted |
+| [0002](adr/0002-roster-sorting.md) | Use the OpenXML SDK to Sort Doubleknot Rosters | Accepted, implemented 2026-11-07 |
 
 ## 10 Quality Requirements
 
@@ -1856,14 +1857,6 @@ paperwork has been created ([9.4](#94-use-the-weekly-doubleknot-export-as-input)
 - **R1. Re-creating paperwork discards drops and adds.** Running Create
    Paperwork again for a week overwrites the roster copy with the Doubleknot
    export and regenerates the paperwork ([9.4](#94-use-the-weekly-doubleknot-export-as-input)).
-- **R2. The first registration in the roster is not sorted.** The sort covers
-   rows 2 onward but is told the range has a header row, so Excel treats row 2
-   as a header and leaves it in place. If row 2's offering is not the first
-   alphabetically, that scout forms a separate group of one. Create Paperwork
-   then writes the offering's paperwork file twice under the same name, and
-   the second write, with everyone else, replaces the first, so the scout is
-   missing from the paperwork ([6.1](#61-create-paperwork)). In the sample export, row 2 happens to be
-   the alphabetically first offering, so it has no effect there.
 - **R3. Drop and Add can leave the roster copy and paperwork out of step.** Both
    change the roster copy before checking that the program's paperwork exists.
    If it doesn't, the user sees an error, but the roster copy has already
@@ -1951,8 +1944,8 @@ paperwork has been created ([9.4](#94-use-the-weekly-doubleknot-export-as-input)
 
 #### Operation
 
-- **R27. A failed sort or print may leave Excel running.** The COM objects are
-    released only when sorting or printing succeeds, so a failure partway may
+- **R27. A failed print may leave Excel running.** The COM objects are
+    released only when printing succeeds, so a failure partway may
     leave the Excel process open ([TD5](#112-technical-debt)).
 - **R28. There is no error log.** A path is defined, but nothing writes to it,
     and unexpected errors go to the default Windows Forms handler ([8.10](#810-error-handling)).
@@ -1967,17 +1960,16 @@ paperwork has been created ([9.4](#94-use-the-weekly-doubleknot-export-as-input)
    workflow does not run the tests ([7.3](#73-build-and-release)). Backsplice
    is still mainly checked by using it. The problems in [11.1](#111-risks) were
    found by reading the code, not by tests, and some (such as
-   R2, R13, and R27) have not been confirmed by running
+   R13 and R27) have not been confirmed by running
    it. The current structure also makes tests hard to add: feature logic
    lives in the forms (TD4), the wrapper classes ProgramPaperwork and
    ExcelSpreadsheet open real files in their constructors
-   ([8.2](#82-spreadsheet-access)), sorting and printing need Excel (TD5),
+   ([8.2](#82-spreadsheet-access)), printing needs Excel (TD5),
    and settings are read from static properties (TD7).
 - **TD2. Roster format knowledge is spread across its callers.** Four features
    read the roster with their own row-number loops and their own
    "Summer Camp Week" filter. Grouping by offering is implemented twice, with
-   different boundary conditions. The sort in Create Paperwork hard-codes
-   column D separately from DoubleKnotRoster ([8.2](#82-spreadsheet-access), [8.3](#83-doubleknot-roster-format)).
+   different boundary conditions ([8.2](#82-spreadsheet-access), [8.3](#83-doubleknot-roster-format)).
 - **TD3. The wrapper classes expose rows and cells, not registrations.** Callers
    work with row numbers, header offsets, sheet sizes, and sheet selection
    ([8.2](#82-spreadsheet-access)).
@@ -1985,11 +1977,10 @@ paperwork has been created ([9.4](#94-use-the-weekly-doubleknot-export-as-input)
    file handling and business rules, and the scout search is a static method
    on the main form that also shows message boxes ([8.8](#88-user-interface-conventions), [9.5](#95-build-a-single-user-windows-desktop-application)).
 - **TD5. Remaining dependency on Excel.** The move to the OpenXML SDK ([9.3](#93-use-the-openxml-sdk-for-spreadsheet-files)) left
-   two operations on Excel COM Interop: sorting the roster copy in Create
-   Paperwork and printing. Backsplice therefore still needs Excel installed
+   one operation on Excel COM Interop: printing. Backsplice therefore still needs Excel installed
    and licensed on the program director's computer, automates a separate
-   Excel process for these operations, and depends on Excel's COM interface
-   behaving the same across versions. These operations cannot be tested
+   Excel process for this operation, and depends on Excel's COM interface
+   behaving the same across versions. This operation cannot be tested
    without Excel (TD1).
 - **TD6. Duplicated code.** The two OnFind methods, week validation in each
    dialog, six near-identical insert loops in Add, and the page header parsing

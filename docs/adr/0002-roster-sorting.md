@@ -4,6 +4,8 @@
 
 **Date:** 2026-10-27
 
+**Implemented:** 2026-11-07
+
 **Addresses:** [R2](../architecture.md#111-risks). Partly addresses [R27](../architecture.md#111-risks) (sorting only), [TD1](../architecture.md#112-technical-debt) (sorting tests),
 [TD2](../architecture.md#112-technical-debt) (the description column in Create Paperwork), [TD4](../architecture.md#112-technical-debt) (sorting moved out of
 the form), and [TD5](../architecture.md#112-technical-debt) (sorting no longer needs Excel).
@@ -126,6 +128,7 @@ To sort a roster using the new implementation, Create Paperwork opens the roster
 * [8.2](../architecture.md#82-spreadsheet-access) (Excel COM Interop): remove the parts about Create Paperwork and sorting
 * [8.6](../architecture.md#86-ordering) (Create Paperwork): remove "using Excel" and the sentence about row 2 being treated as a header ([R2](../architecture.md#111-risks))
 * [9.3](../architecture.md#93-use-the-openxml-sdk-for-spreadsheet-files): change the status to "Accepted, November 2010; partly superseded by ADR 0002 (sorting)"
+* [9.5](../architecture.md#95-build-a-single-user-windows-desktop-application): remove "sorting and"
 * [11.1](../architecture.md#111-risks) ([R2](../architecture.md#111-risks)) : remove
 * [11.1](../architecture.md#111-risks) ([R27](../architecture.md#111-risks)): remove sorting
 * [11.2](../architecture.md#112-technical-debt) ([TD1](../architecture.md#112-technical-debt)): remove references to [R2](../architecture.md#111-risks) and sorting

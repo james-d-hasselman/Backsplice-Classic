@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
-using Excel = Microsoft.Office.Interop.Excel;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Linq;
@@ -316,7 +315,10 @@ namespace Backsplice
                 System.IO.File.Copy(txtDoubleKnotRoster.Text, strRosterSavePath, true);
 
                 // Sort the Doubleknot roster copy
-                SortRoster(strRosterSavePath);
+                using (var roster = new DoubleKnotRoster(strRosterSavePath, false))
+                {
+                    roster.Sort();
+                }
 
                 // Open the DoubleKnot roster copy
                 dkrRoster = new DoubleKnotRoster(strRosterSavePath, true);
@@ -435,48 +437,6 @@ namespace Backsplice
 
                 dkrRoster.Dispose();
             }
-        }
-
-        private void SortRoster(string strRosterSavePath)
-        {
-            Excel.Application m_objExcel;
-            Excel.Workbooks m_objWorkbooks;
-            Excel.Workbook m_objPaperwork;
-
-            m_objExcel = new Excel.Application();
-            m_objExcel.DisplayAlerts = false;
-
-            m_objWorkbooks = m_objExcel.Workbooks;
-            m_objPaperwork = m_objWorkbooks.Open(strRosterSavePath, Missing.Value);
-
-
-            Excel.Worksheet mainSheet = (Excel.Worksheet)m_objPaperwork.Sheets[1];
-            int lastRow = 0;
-            lastRow = mainSheet.UsedRange.Row + mainSheet.UsedRange.Rows.Count - 1;
-
-            //Excel.Range range = mainSheet.Range[mainSheet.Cells[1, 2], mainSheet.UsedRange.Cells[mainSheet.UsedRange.Cells.Count, mainSheet.UsedRange.Rows.Count]];
-            Excel.Range range = mainSheet.Range["A2", "F" + lastRow];
-            range.Select();
-            mainSheet.Sort.SortFields.Add(mainSheet.Range["D2", "D" + lastRow], Type.Missing, Excel.XlSortOrder.xlAscending);
-
-            mainSheet.Sort.SetRange(range);
-            mainSheet.Sort.Header = Excel.XlYesNoGuess.xlYes;
-            mainSheet.Sort.MatchCase = false;
-            mainSheet.Sort.Orientation = Excel.XlSortOrientation.xlSortColumns;
-            mainSheet.Sort.SortMethod = Excel.XlSortMethod.xlPinYin;
-            mainSheet.Sort.Apply();
-
-            m_objPaperwork.Save();
-            m_objPaperwork.Close(false, null, false);
-
-            Marshal.ReleaseComObject(range);
-            Marshal.ReleaseComObject(mainSheet);
-            Marshal.ReleaseComObject(m_objPaperwork);
-            Marshal.ReleaseComObject(m_objWorkbooks);
-
-
-            m_objExcel.Quit();
-            Marshal.ReleaseComObject(m_objExcel);
         }
 
         private void bgwCreate_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
