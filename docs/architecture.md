@@ -1811,6 +1811,7 @@ separate ADRs:
 | --- | --- | --- |
 | [0001](adr/0001-testing-approach.md) | Testing Approach | Accepted, implemented 2026-10-25 |
 | [0002](adr/0002-roster-sorting.md) | Use the OpenXML SDK to Sort Doubleknot Rosters | Accepted, implemented 2026-11-07 |
+| [0003](adr/0003-feature-logic-separation.md) | Separate Feature Logic from Forms | Proposed |
 
 ## 10 Quality Requirements
 
