@@ -108,16 +108,12 @@ namespace Backsplice.Tests.TestData
                     }
                     rowIndex++;
                 }
-
-                var worksheet = new Worksheet(sheetData);
-                // Create the columns
-                var columns = new Columns(new List<OpenXmlElement> {
-                      new Column(),
-                      new Column(),
-                      new Column(),
-                      new Column()
-                    });
-                worksheet.Append(columns);
+                var columns = new Columns(
+                    new Column { Min = 1, Max = 1 },
+                    new Column { Min = 2, Max = 2 },
+                    new Column { Min = 3, Max = 3 },
+                    new Column { Min = 4, Max = 4 });
+                var worksheet = new Worksheet(columns, sheetData);
                 var workbook = new Workbook { FileVersion = new FileVersion { ApplicationName = "Microsoft Office Excel" } };
                 var workbookPart = doubleknotRoster.AddWorkbookPart();
                 workbookPart.Workbook = workbook;
